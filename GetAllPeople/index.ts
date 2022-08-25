@@ -5,12 +5,11 @@ import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  _req: HttpRequest
 ): Promise<void> {
   try {
     mongooseConnection();
 
-    //  await MyPerson.find({});
     context.res = {
       body: await MyPerson.find({}),
     };

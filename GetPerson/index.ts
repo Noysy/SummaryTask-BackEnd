@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { validateId } from "../Person/PersonInterface";
 import PersonManager from "../Person/PersonManager";
-import PersonRepository from "../Person/PersonRepository";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 

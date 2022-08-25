@@ -1,8 +1,8 @@
-import { MyPerson, Person } from "./PersonInterface";
+import { MyPerson } from "./PersonInterface";
 
 class PersonRepository {
-  static async getPerson(id: string) {
-    return await MyPerson.findOne({ _id: id });
+  static getPerson(id: string) {
+    return MyPerson.findOne({ _id: id });
   }
 }
 

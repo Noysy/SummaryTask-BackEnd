@@ -4,8 +4,6 @@ import {
   Person,
   personRequirements,
 } from "../Person/PersonInterface";
-import PersonManager from "../Person/PersonManager";
-import PersonRepository from "../Person/PersonRepository";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
