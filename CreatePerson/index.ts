@@ -24,15 +24,15 @@ const httpTrigger: AzureFunction = async function (
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
     await mongooseConnection();
-      name: person.name,
-      favoriteColor: person.favoriteColor,
-      favoriteAnimal: person.favoriteAnimal,
-      favoriteFood: person.favoriteFood,
-    });
 
     context.res = {
       status: 200,
-      body: newPerson,
+      body: await MyPerson.create({
+        name: person.name,
+        favoriteColor: person.favoriteColor,
+        favoriteAnimal: person.favoriteAnimal,
+        favoriteFood: person.favoriteFood,
+      }),
     };
   } catch (err) {
     err.statusCode ??= 500;
