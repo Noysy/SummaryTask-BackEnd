@@ -13,6 +13,10 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id });
 
     await mongooseConnection();
+    const person = await MyPerson.findByIdAndDelete(id);
+    if (person === null)
+      throw new CustomError("There is no such person with given id", 404);
+
     context.res = {
       body: person,
     };
