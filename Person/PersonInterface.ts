@@ -17,9 +17,7 @@ person.set('toJSON', {
   },
 });
 
-mongoose.pluralize(null);
-const MyPerson = mongoose.model('people', person);
-
+const MyPerson = mongoose.model("person", person);
 
 interface Person {
   name: string;
