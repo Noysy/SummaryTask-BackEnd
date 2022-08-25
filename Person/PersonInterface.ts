@@ -28,7 +28,7 @@ interface Person {
 
 const idPattern = Joi.object().keys({
   id: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
+    .pattern(/^[0-9a-f]{24}$/)
     .required(),
 });
 
