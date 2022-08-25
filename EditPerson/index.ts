@@ -34,7 +34,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200,
-      body: await PersonRepository.getPerson(id),
+      body: await MyPerson.findByIdAndUpdate(id, changes, {new: true})
     };
   } catch (err) {
     err.statusCode ??= 500;
