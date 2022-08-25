@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
     context.res = {
-      body: person,
+      body: await PersonManager.getPerson(id),
     };
   } catch (err) {
     err.statusCode ??= 500;
