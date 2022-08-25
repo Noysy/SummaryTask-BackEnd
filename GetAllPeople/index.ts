@@ -8,7 +8,7 @@ const httpTrigger: AzureFunction = async function (
   _req: HttpRequest
 ): Promise<void> {
   try {
-    mongooseConnection();
+    await mongooseConnection();
 
     context.res = {
       body: await MyPerson.find({}),

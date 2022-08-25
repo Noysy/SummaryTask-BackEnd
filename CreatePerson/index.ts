@@ -23,8 +23,7 @@ const httpTrigger: AzureFunction = async function (
     const validation = personRequirements.validate(person);
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
-    mongooseConnection();
-    const newPerson = await MyPerson.create({
+    await mongooseConnection();
       name: person.name,
       favoriteColor: person.favoriteColor,
       favoriteAnimal: person.favoriteAnimal,

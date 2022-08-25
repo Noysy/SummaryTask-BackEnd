@@ -12,9 +12,7 @@ const httpTrigger: AzureFunction = async function (
     const id = context.bindingData.id;
     validateId({ id });
 
-    mongooseConnection();
-    const person = await PersonManager.getPerson(id);
-    await MyPerson.findByIdAndDelete(id);
+    await mongooseConnection();
     context.res = {
       body: person,
     };

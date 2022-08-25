@@ -30,8 +30,7 @@ const httpTrigger: AzureFunction = async function (
     const validation = updatePersonDetails.validate(changes);
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
-    mongooseConnection();
-    await MyPerson.findByIdAndUpdate(id, changes);
+    await mongooseConnection();
 
     context.res = {
       status: 200,
