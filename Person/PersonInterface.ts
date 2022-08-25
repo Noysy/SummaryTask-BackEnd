@@ -32,7 +32,7 @@ const idPattern = Joi.object().keys({
     .required(),
 });
 
-const idValidation = (id: { id: string }) => {
+const validateId = (id: { id: string }) => {
   const validation = idPattern.validate(id);
   if (validation.error) throw new CustomError(validation.error.message, 400);
 };
@@ -49,8 +49,13 @@ const updatePersonDetails = Joi.object().keys({
   favoriteColor: Joi.string().max(15),
   favoriteAnimal: Joi.string().max(15),
   favoriteFood: Joi.string().max(15),
+});
 
-})
-
-
-export { Person, idValidation, person, MyPerson, personRequirements, updatePersonDetails };
+export {
+  Person,
+  validateId,
+  person,
+  MyPerson,
+  personRequirements,
+  updatePersonDetails,
+};

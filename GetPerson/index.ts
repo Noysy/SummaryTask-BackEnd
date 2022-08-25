@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { idValidation, MyPerson } from "../Person/PersonInterface";
+import { validateId } from "../Person/PersonInterface";
 import PersonManager from "../Person/PersonManager";
 import PersonRepository from "../Person/PersonRepository";
 import errorHandler from "../Util/errorHandling";
@@ -11,7 +11,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
-    idValidation({ id: id });
+    validateId({ id });
 
     mongooseConnection();
     const person = await PersonManager.getPerson(id);

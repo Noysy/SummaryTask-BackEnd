@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { idValidation, MyPerson } from "../Person/PersonInterface";
+import { MyPerson } from "../Person/PersonInterface";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 

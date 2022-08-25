@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import {
-  idValidation,
+  validateId,
   MyPerson,
   Person,
   personRequirements,
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
-    idValidation({ id: id });
+    validateId({ id });
 
     const changes: Person = {
       name: req.body?.name,
