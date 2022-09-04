@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["put"],
-      "route": "/groups/addPerson/{id}/{personId}"
+      "route": "groups/addPerson/{id}/{personId}"
     },
     {
       "type": "http",
