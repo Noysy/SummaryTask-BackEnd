@@ -21,11 +21,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200,
-      body: await MyGroup.create({
-        name: group.name,
-        people: group.people,
-        parentGroup: group.parentGroup,
-      }),
+      body: await MyGroup.create(group),
     };
   } catch (err) {
     err.statusCode ??= 500;
