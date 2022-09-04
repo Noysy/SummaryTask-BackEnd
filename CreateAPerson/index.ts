@@ -1,5 +1,4 @@
 import { AzureFunction, Context } from "@azure/functions";
-import { MyGroup } from "../Group/GroupInterface";
 import GroupRepository from "../Group/GroupRepository";
 import errorHandler from "../Util/errorHandling";
 

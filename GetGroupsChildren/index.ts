@@ -2,7 +2,6 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { MyGroup } from "../Group/GroupInterface";
 import GroupManager from "../Group/GroupManager";
 import { validateId } from "../Person/PersonInterface";
-import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 

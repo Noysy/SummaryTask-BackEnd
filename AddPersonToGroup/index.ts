@@ -1,5 +1,4 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { MyGroup } from "../Group/GroupInterface";
 import GroupManager from "../Group/GroupManager";
 import GroupRepository from "../Group/GroupRepository";
 import { validateId } from "../Person/PersonInterface";
