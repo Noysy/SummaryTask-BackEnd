@@ -13,7 +13,7 @@ person.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
-      delete ret._id;
+    delete ret._id;
   },
 });
 
@@ -24,6 +24,7 @@ interface Person {
   favoriteColor: string;
   favoriteAnimal: string;
   favoriteFood: string;
+  group?: string;
 }
 
 const idPattern = Joi.object().keys({
@@ -42,6 +43,7 @@ const personRequirements = Joi.object().keys({
   favoriteColor: Joi.string().required().max(15),
   favoriteAnimal: Joi.string().required().max(15),
   favoriteFood: Joi.string().required().max(15),
+  group: Joi.string().pattern(/^[0-9a-f]{24}$/),
 });
 
 const updatePersonDetails = Joi.object().keys({
