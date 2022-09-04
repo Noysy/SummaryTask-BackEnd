@@ -12,6 +12,13 @@
       "type": "http",
       "direction": "out",
       "name": "res"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "bothIds",
+      "queueName": "add-person-to-group-queue",
+      "connection": "AzureWebJobsStorage"
     }
   ],
   "scriptFile": "../dist/CreatePerson/index.js"
