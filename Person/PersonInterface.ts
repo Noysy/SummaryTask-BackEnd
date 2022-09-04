@@ -9,7 +9,7 @@ const person = new mongoose.Schema({
   favoriteFood: { type: String, required: true },
 });
 
-person.set('toJSON', {
+person.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
