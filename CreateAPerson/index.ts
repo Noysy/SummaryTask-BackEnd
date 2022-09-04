@@ -1,5 +1,6 @@
 import { AzureFunction, Context } from "@azure/functions";
 import { MyGroup } from "../Group/GroupInterface";
+import GroupRepository from "../Group/GroupRepository";
 import errorHandler from "../Util/errorHandling";
 
 const queueTrigger: AzureFunction = async function (
@@ -9,11 +10,7 @@ const queueTrigger: AzureFunction = async function (
   try {
     context.res = {
       status: 200,
-      body: await MyGroup.findByIdAndUpdate(
-        context.bindings.bothIds.group,
-        { $push: { people: context.bindings.bothIds.person } },
-        { new: true }
-      ),
+      body: await GroupRepository.addPersonToGroup(context.bindings.bothIds.group, context.bindings.bothIds.person),
     };
   } catch (err) {
     err.statusCode ??= 500;
