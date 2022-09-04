@@ -27,11 +27,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200,
-      body: await MyGroup.findByIdAndUpdate(
-        id,
-        { $push: { people: personId } },
-        { new: true }
-      ),
+      body: await GroupRepository.addPersonToGroup(id, personId),
     };
   } catch (err) {
     err.statusCode ??= 500;
