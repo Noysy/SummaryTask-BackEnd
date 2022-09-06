@@ -25,6 +25,7 @@ interface Person {
   favoriteAnimal: string;
   favoriteFood: string;
   group?: string;
+  files?: [string];
 }
 
 const idPattern = Joi.object().keys({
@@ -44,6 +45,7 @@ const personRequirements = Joi.object().keys({
   favoriteAnimal: Joi.string().required().max(15),
   favoriteFood: Joi.string().required().max(15),
   group: Joi.string().pattern(/^[0-9a-f]{24}$/),
+  files: Joi.array().items(Joi.string()),
 });
 
 const updatePersonDetails = Joi.object().keys({
