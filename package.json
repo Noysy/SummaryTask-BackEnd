@@ -10,6 +10,7 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.11.0",
     "@azure/storage-queue": "^12.10.0",
     "joi": "^17.6.0",
     "mongoose": "^6.5.2"
