@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
 const group = new mongoose.Schema({
   name: String,
-  people: { type: [String], ref: "people" },
-  parentGroup: { type: String, ref: "groups" },
+  people: { type: [String], ref: "person" },
+  parentGroup: { type: String, ref: "group" },
 });
 
 group.set("toJSON", {
