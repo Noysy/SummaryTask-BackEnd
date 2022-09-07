@@ -17,8 +17,6 @@ person.set("toJSON", {
   },
 });
 
-const MyPerson = mongoose.model("person", person);
-
 interface Person {
   name: string;
   favoriteColor: string;
@@ -54,6 +52,8 @@ const updatePersonDetails = Joi.object().keys({
   favoriteAnimal: Joi.string().max(15),
   favoriteFood: Joi.string().max(15),
 });
+
+const MyPerson = mongoose.model("person", person);
 
 export {
   Person,
