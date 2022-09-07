@@ -5,6 +5,7 @@ import {
   SASProtocol,
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
+import { MyPerson } from "../Person/PersonInterface";
 
 const blobTrigger: AzureFunction = async function (
   context: Context,
@@ -30,6 +31,11 @@ const blobTrigger: AzureFunction = async function (
   const SASUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${blobName}?${SASToken}`;
 
   console.log(SASUrl);
+//   await MyPerson.findByIdAndUpdate(
+//     groupId,
+//     { $push: { people: SASUrl } },
+//     { new: true }
+//   );
 };
 
 export default blobTrigger;
