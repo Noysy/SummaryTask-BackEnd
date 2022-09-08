@@ -7,6 +7,7 @@ const person = new mongoose.Schema({
   favoriteColor: { type: String, required: true },
   favoriteAnimal: { type: String, required: true },
   favoriteFood: { type: String, required: true },
+  files: [{ name: String, url: String }],
 });
 
 person.set("toJSON", {
@@ -23,7 +24,12 @@ interface Person {
   favoriteAnimal: string;
   favoriteFood: string;
   group?: string;
-  files?: [string];
+  files?: FileDetails[];
+}
+
+interface FileDetails {
+  name: string;
+  url: string;
 }
 
 const idPattern = Joi.object().keys({
@@ -42,7 +48,9 @@ const personRequirements = Joi.object().keys({
   favoriteColor: Joi.string().required().max(15),
   favoriteAnimal: Joi.string().required().max(15),
   favoriteFood: Joi.string().required().max(15),
-  group: Joi.string().pattern(/^[0-9a-f]{24}$/),
+  group: Joi.string()
+    .pattern(/^[0-9a-f]{24}$/)
+    .allow(null, ""),
   files: Joi.array().items(Joi.string()),
 });
 
