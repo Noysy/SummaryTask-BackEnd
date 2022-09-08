@@ -27,8 +27,6 @@ const timerTrigger: AzureFunction = async function (
       const messageString = Buffer.from(message.messageText, "base64");
       const encryptedMessage = JSON.parse(messageString.toString());
 
-      console.log(encryptedMessage.group, encryptedMessage.person);
-
       await GroupRepository.addPersonToGroup(
         encryptedMessage.group,
         encryptedMessage.person

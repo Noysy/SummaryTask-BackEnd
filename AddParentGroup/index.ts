@@ -36,7 +36,6 @@ const httpTrigger: AzureFunction = async function (
           parentGroup: 1,
           _id: 0,
         });
-        console.log(parent);
 
         await checkPrecedingParent(id, String(parent?.parentGroup));
       } else return false;

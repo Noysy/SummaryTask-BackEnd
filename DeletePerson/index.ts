@@ -20,7 +20,6 @@ const httpTrigger: AzureFunction = async function (
 
     (await MyGroup.find({ people: id }, { _id: 1 })).forEach(
       async (groupId) => {
-        console.log(groupId);
         await MyGroup.findByIdAndUpdate(groupId, { $pull: { people: id } });
       }
     );
