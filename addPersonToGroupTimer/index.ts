@@ -16,22 +16,31 @@ const timerTrigger: AzureFunction = async function (
       "add-person-to-group-queue"
     );
 
-    const queueItems = (await queueClient.getProperties())
+    let queueItems = (await queueClient.getProperties())
       .approximateMessagesCount;
 
-    const peekedMessages = await queueClient.peekMessages({
-      numberOfMessages: queueItems,
-    });
+    while (queueItems > 0) {
+      let currentMessages: number;
+      if (queueItems > 32) {
+        queueItems = queueItems - 32;
+        currentMessages = 32;
+      } else {
+        currentMessages = queueItems;
+      }
+      const receivedMessages = await queueClient.receiveMessages({
+        numberOfMessages: currentMessages,
+      });
 
-    peekedMessages.peekedMessageItems.forEach(async (message) => {
-      const messageString = Buffer.from(message.messageText, "base64");
-      const encryptedMessage = JSON.parse(messageString.toString());
+      receivedMessages.receivedMessageItems.forEach(async (message) => {
+        const messageString = Buffer.from(message.messageText, "base64");
+        const encryptedMessage = JSON.parse(messageString.toString());
 
-      await GroupRepository.addPersonToGroup(
-        encryptedMessage.group,
-        encryptedMessage.person
-      );
-    });
+        await GroupRepository.addPersonToGroup(
+          encryptedMessage.group,
+          encryptedMessage.person
+        );
+      });
+    }
 
     await queueClient.clearMessages();
   } catch (err) {
