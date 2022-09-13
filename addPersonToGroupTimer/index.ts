@@ -39,10 +39,9 @@ const timerTrigger: AzureFunction = async function (
           encryptedMessage.group,
           encryptedMessage.person
         );
+        await queueClient.deleteMessage(message.messageId, message.popReceipt)
       });
     }
-
-    await queueClient.clearMessages();
   } catch (err) {
     err.statusCode ??= 500;
     errorHandler(context, err);
