@@ -22,6 +22,7 @@ const httpTrigger: AzureFunction = async function (
       favoriteColor: req.body?.favoriteColor,
       favoriteAnimal: req.body?.favoriteAnimal,
       favoriteFood: req.body?.favoriteFood,
+      role: req.body?.role
     };
 
     const validation = updatePersonDetails.validate(changes);

@@ -19,6 +19,7 @@ const httpTrigger: AzureFunction = async function (
       favoriteColor: req.body?.favoriteColor,
       favoriteAnimal: req.body?.favoriteAnimal,
       favoriteFood: req.body?.favoriteFood,
+      role: req.body?.role,
       group: req.body?.group,
     };
 
@@ -35,6 +36,7 @@ const httpTrigger: AzureFunction = async function (
       favoriteColor: person.favoriteColor,
       favoriteAnimal: person.favoriteAnimal,
       favoriteFood: person.favoriteFood,
+      role: person.role,
     });
 
     context.res = {

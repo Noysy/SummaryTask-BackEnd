@@ -7,13 +7,14 @@ const person = new mongoose.Schema({
   favoriteColor: { type: String, required: true },
   favoriteAnimal: { type: String, required: true },
   favoriteFood: { type: String, required: true },
+  role: { type: String, required: true },
   files: [{ name: String, url: String }],
 });
 
 person.set("toJSON", {
   virtuals: true,
   versionKey: false,
-  transform: function (doc, ret) {
+  transform: function (_doc, ret) {
     delete ret._id;
   },
 });
@@ -23,6 +24,7 @@ interface Person {
   favoriteColor: string;
   favoriteAnimal: string;
   favoriteFood: string;
+  role: string;
   group?: string;
   files?: FileDetails[];
 }
@@ -48,6 +50,7 @@ const personRequirements = Joi.object().keys({
   favoriteColor: Joi.string().required().max(15),
   favoriteAnimal: Joi.string().required().max(15),
   favoriteFood: Joi.string().required().max(15),
+  role: Joi.string().required().max(15),
   group: Joi.string()
     .pattern(/^[0-9a-f]{24}$/)
     .allow(null, ""),
@@ -59,6 +62,7 @@ const updatePersonDetails = Joi.object().keys({
   favoriteColor: Joi.string().max(15),
   favoriteAnimal: Joi.string().max(15),
   favoriteFood: Joi.string().max(15),
+  role: Joi.string().max(15),
 });
 
 const MyPerson = mongoose.model("person", person);

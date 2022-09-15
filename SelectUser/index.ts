@@ -9,11 +9,10 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   await mongooseConnection();
   const person = await PersonManager.getPerson(req.params.id);
-
   const accessToken = jwt.sign(
     {
       name: person.name,
-      // role: person.role,
+      role: person.role,
       id: person.id,
     },
     process.env.TOKEN_SECRET
