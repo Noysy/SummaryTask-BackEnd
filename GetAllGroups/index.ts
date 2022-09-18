@@ -13,10 +13,15 @@ const httpTrigger: AzureFunction = async function (
   try {
     const id = user.id;
     await mongooseConnection();
-    
-    context.res = {
-      body: await MyGroup.find({ people: id }),
-    };
+    if (user.role === "USER") {
+      context.res = {
+        body: await MyGroup.find({ people: id }),
+      };
+    } else if (user.role === "ADMIN") {
+      context.res = {
+        body: await MyGroup.find({}),
+      };
+    }
   } catch (err) {
     err.statusCode ??= 500;
     errorHandler(context, err);
