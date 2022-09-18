@@ -7,12 +7,12 @@ import {
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
 import { DBPerson, MyPerson } from "../Person/PersonInterface";
-import PersonManager from "../Person/PersonManager";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 import multipart from "parse-multipart";
 import CustomError from "../Util/customError";
 import { authWrapper, userPerm } from "../Util/authorization";
+import { errors } from "../config";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -22,7 +22,8 @@ const httpTrigger: AzureFunction = async function (
   try {
     const id = context.bindingData.id;
     await mongooseConnection();
-    await PersonManager.getPerson(id);
+    if ((await MyPerson.findOne({ _id: id })) === null)
+      throw errors.noPersonErr;
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);

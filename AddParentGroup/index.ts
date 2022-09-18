@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { errors } from "../config";
 import { MyGroup } from "../Group/GroupInterface";
-import GroupManager from "../Group/GroupManager";
-import GroupRepository from "../Group/GroupRepository";
 import { DBPerson, validateId } from "../Person/PersonInterface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
@@ -20,20 +19,26 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: parentId });
 
     await mongooseConnection();
-    await GroupManager.getGroup(id);
+    if ((await MyGroup.findOne({ _id: id })) === null) throw errors.noGroupErr;
 
     if (id === parentId)
       throw new CustomError("A group can't be its own parent.", 400);
 
-    await GroupManager.getGroup(parentId);
+    if ((await MyGroup.findOne({ _id: parentId })) === null)
+      throw errors.noGroupErr;
 
-    if (await GroupRepository.doesGroupHaveParent(id))
+    if (await MyGroup.findOne({ _id: id, parentGroup: { $exists: true } }))
       throw new CustomError("The group already has a parent", 400);
 
     const checkPrecedingParent = async (id: string, parentGroup: string) => {
       if (id === parentGroup) return null;
 
-      if (await GroupRepository.doesGroupHaveParent(parentGroup)) {
+      if (
+        await MyGroup.findOne({
+          _id: parentGroup,
+          parentGroup: { $exists: true },
+        })
+      ) {
         const parent = await MyGroup.findById(parentGroup, {
           parentGroup: 1,
           _id: 0,

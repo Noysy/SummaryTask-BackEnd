@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { MyGroup, nameLength } from "../Group/GroupInterface";
-import GroupRepository from "../Group/GroupRepository";
+
 import { DBPerson, validateId } from "../Person/PersonInterface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
@@ -32,7 +32,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200,
-      body: group
+      body: group,
     };
   } catch (err) {
     err.statusCode ??= 500;

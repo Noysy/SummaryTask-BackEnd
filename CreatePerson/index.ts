@@ -1,5 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import GroupManager from "../Group/GroupManager";
+import { errors } from "../config";
+import { MyGroup } from "../Group/GroupInterface";
 import {
   DBPerson,
   MyPerson,
@@ -32,7 +33,9 @@ const httpTrigger: AzureFunction = async function (
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
     await mongooseConnection();
-    if (groupId) await GroupManager.getGroup(groupId);
+    if (groupId)
+      if ((await MyGroup.findOne({ _id: groupId })) === null)
+        throw errors.noGroupErr;
 
     const newPerson = await MyPerson.create({
       name: person.name,
