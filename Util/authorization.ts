@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import CustomError from "./customError";
 import configFile from "../config";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import errorHandler from "./errorHandling";
 
 export const jwtDecode = (token: string) => {
   try {
@@ -37,17 +38,21 @@ export const authWrapper = (
     context: Context,
     req: HttpRequest
   ): Promise<HttpTriggerResult> => {
-    const header = req.headers?.authorization;
+    try {
+      const header = req.headers?.authorization;
 
-    if (header && header.split(" ")[1]) {
-      const user = jwtDecode(header.split(" ")[1]);
-      if (user) {
-        permissionType();
-        return func(context, req, user);
+      if (header && header.split(" ")[1]) {
+        const user = jwtDecode(header.split(" ")[1]);
+        if (user) {
+          permissionType();
+          return func(context, req, user);
+        }
       }
+      return {
+        status: 401,
+      };
+    } catch (err) {
+      errorHandler(context, err);
     }
-    return {
-      status: 401,
-    };
   };
 };
