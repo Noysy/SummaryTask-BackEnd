@@ -9,25 +9,25 @@ export const jwtDecode = (token: string) => {
     const jwtDecoded = jwt.verify(token, process.env.TOKEN_SECRET);
     return jwtDecoded;
   } catch (err) {
-    throw new CustomError(configFile.noPermissionErr, 400);
+    throw configFile.noPermissionErr;
   }
 };
 
 export const noPermission = (role: string) => {
   if (role !== "USER" && role !== "ADMIN") {
-    throw new CustomError(configFile.noPermissionErr, 400);
+    throw configFile.noPermissionErr;
   }
 };
 
 export const userPerm = (role: string) => {
   if (role !== "ADMIN" && role !== "USER") {
-    throw new CustomError(configFile.noPermissionErr, 400);
+    throw configFile.noPermissionErr;
   }
 };
 
 export const adminPerm = (role: string) => {
   if (role !== "ADMIN") {
-    throw new CustomError(configFile.noPermissionErr, 400);
+    throw configFile.noPermissionErr;
   }
 };
 
