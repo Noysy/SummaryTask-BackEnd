@@ -1,12 +1,15 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Group, groupRequirements, MyGroup } from "../Group/GroupInterface";
+import { DBPerson } from "../Person/PersonInterface";
+import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  req: HttpRequest,
+  user: DBPerson
 ): Promise<void> {
   try {
     const group: Group = {
@@ -29,4 +32,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, adminPerm);
