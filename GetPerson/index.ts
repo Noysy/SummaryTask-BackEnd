@@ -1,16 +1,20 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { validateId } from "../Person/PersonInterface";
+import configFile from "../config";
+import { DBPerson, validateId } from "../Person/PersonInterface";
 import PersonManager from "../Person/PersonManager";
+import { authWrapper, userPerm } from "../Util/authorization";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  _req: HttpRequest
+  _req: HttpRequest,
+  user: DBPerson
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
     validateId({ id });
+    if (!id === id && user.role === "USER") throw configFile.noPermissionErr;
 
     await mongooseConnection();
     context.res = {
@@ -22,4 +26,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, userPerm);
