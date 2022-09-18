@@ -50,7 +50,7 @@ export const authWrapper = (
       if (header && header.split(" ")[1]) {
         const user = jwtDecode(header.split(" ")[1]);
         if (user) {
-          permissionType();
+          permissionType(user.role);
           return func(context, req, user);
         }
       }
