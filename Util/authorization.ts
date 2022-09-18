@@ -19,6 +19,12 @@ export const noPermission = (role: string) => {
   }
 };
 
+export const userPerm = (role: string) => {
+  if (role !== "ADMIN" && role !== "USER") {
+    throw new CustomError(configFile.noPermissionErr, 400);
+  }
+};
+
 export const adminPerm = (role: string) => {
   if (role !== "ADMIN") {
     throw new CustomError(configFile.noPermissionErr, 400);
