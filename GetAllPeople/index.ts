@@ -30,7 +30,7 @@ const httpTrigger: AzureFunction = async function (
     if (people.length === 0) people.push(await MyPerson.findById(id));
 
     context.res = {
-      body: [people],
+      body: people,
     };
   } catch (err) {
     err.statusCode ??= 500;
