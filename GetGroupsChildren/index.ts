@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import configFile from "../config";
+import configFile, { errors } from "../config";
 import { MyGroup } from "../Group/GroupInterface";
 import GroupManager from "../Group/GroupManager";
 import { DBPerson, validateId } from "../Person/PersonInterface";
@@ -17,7 +17,7 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: id });
     await mongooseConnection();
 
-    if (!(await GroupManager.getGroup(id)).people.includes(user.id) && user.role === 'USER') throw configFile.noPermissionErr;
+      throw errors.noPermissionErr;
 
     context.res = {
       status: 200,

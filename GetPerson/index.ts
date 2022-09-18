@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (
   try {
     const id = context.bindingData.id;
     validateId({ id });
-    if (!id === id && user.role === "USER") throw configFile.noPermissionErr;
+    if (!id === id && user.role === "USER") throw errors.noPermissionErr;
 
     await mongooseConnection();
     context.res = {

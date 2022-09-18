@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import configFile from "../config";
+import { errors } from "../config";
 import { MyGroup } from "../Group/GroupInterface";
 import { DBPerson, validateId } from "../Person/PersonInterface";
 import { authWrapper, userPerm } from "../Util/authorization";
@@ -19,8 +19,8 @@ const httpTrigger: AzureFunction = async function (
     const group = await MyGroup.findById(id);
 
     if (!group.people.includes(user.id) && user.role === "USER")
-      throw configFile.noPermissionErr;
-      
+      throw errors.noPermissionErr;
+
     context.res = {
       body: group.populate("people"),
     };

@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import configFile from "../config";
+import { errors } from "../config";
 import { MyGroup } from "../Group/GroupInterface";
 import { DBPerson, validateId } from "../Person/PersonInterface";
 import { authWrapper, userPerm } from "../Util/authorization";
@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (
   try {
     const id = context.bindingData.id;
     validateId({ id: id });
-    if (!id === id && user.role === "USER") throw configFile.noPermissionErr;
+    if (!id === id && user.role === "USER") throw errors.noPermissionErr;
 
     await mongooseConnection();
     context.res = {
