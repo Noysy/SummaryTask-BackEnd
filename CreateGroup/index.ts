@@ -9,7 +9,7 @@ import mongooseConnection from "../Util/mongooseConnection";
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
-  user: DBPerson
+  _user: DBPerson
 ): Promise<void> {
   try {
     const group: Group = {
