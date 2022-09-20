@@ -1,6 +1,6 @@
 import { AzureFunction, Context } from "@azure/functions";
 import { QueueServiceClient } from "@azure/storage-queue";
-import { MyGroup } from "../Group/group.interface";
+import { Group } from "../Group/group.interface";
 import errorHandler from "../Util/error.handling";
 
 const timerTrigger: AzureFunction = async function (
@@ -34,7 +34,7 @@ const timerTrigger: AzureFunction = async function (
       receivedMessages.receivedMessageItems.forEach(async (message) => {
         const messageString = Buffer.from(message.messageText, "base64");
         const encryptedMessage = JSON.parse(messageString.toString());
-        await MyGroup.findByIdAndUpdate(
+        await Group.findByIdAndUpdate(
           encryptedMessage.group,
           { $push: { people: encryptedMessage.person } },
           { new: true }

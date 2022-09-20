@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { MyGroup, nameLength } from "../Group/group.interface";
+import { Group, nameLength } from "../Group/group.interface";
 
 import { DBPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
@@ -22,7 +22,7 @@ const httpTrigger: AzureFunction = async function (
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
     await mongooseConnection();
-    const group = await MyGroup.findByIdAndUpdate(
+    const group = await Group.findByIdAndUpdate(
       id,
       { name: newName },
       { new: true }

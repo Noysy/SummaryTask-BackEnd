@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { MyGroup } from "../Group/group.interface";
+import { Group } from "../Group/group.interface";
 import { DBPerson } from "../Person/person.interface";
 import { authWrapper, userPerm } from "../Util/authorization";
 import errorHandler from "../Util/error.handling";
@@ -15,11 +15,11 @@ const httpTrigger: AzureFunction = async function (
     await mongooseConnection();
     if (user.role === "USER") {
       context.res = {
-        body: await MyGroup.find({ people: id }),
+        body: await Group.find({ people: id }),
       };
     } else if (user.role === "ADMIN") {
       context.res = {
-        body: await MyGroup.find({}),
+        body: await Group.find({}),
       };
     }
   } catch (err) {

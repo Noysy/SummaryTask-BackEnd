@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { MyGroup } from "../Group/group.interface";
+import { Group } from "../Group/group.interface";
 import { validateId, MyPerson, DBPerson } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/custom.error";
@@ -20,9 +20,9 @@ const httpTrigger: AzureFunction = async function (
     if (person === null)
       throw new CustomError("There is no such person with given id", 404);
 
-    (await MyGroup.find({ people: id }, { _id: 1 })).forEach(
+    (await Group.find({ people: id }, { _id: 1 })).forEach(
       async (groupId) => {
-        await MyGroup.findByIdAndUpdate(groupId, { $pull: { people: id } });
+        await Group.findByIdAndUpdate(groupId, { $pull: { people: id } });
       }
     );
 

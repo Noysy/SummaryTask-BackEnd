@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { MyGroup } from '../Group/group.interface';
+import { Group } from '../Group/group.interface';
 import { MyPerson, DBPerson } from '../Person/person.interface';
 import { authWrapper, userPerm } from '../Util/authorization';
 import errorHandler from '../Util/error.handling';
@@ -17,7 +17,7 @@ const httpTrigger: AzureFunction = async function (
       const id = user.id;
 
       const people = [];
-      const groupsOfPerson = await MyGroup.find(
+      const groupsOfPerson = await Group.find(
         { people: id },
         { _id: 0, people: 1 },
       ).populate('people');

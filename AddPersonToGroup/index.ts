@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { errors } from "../config";
-import { MyGroup } from "../Group/group.interface";
+import { Group } from "../Group/group.interface";
 import { DBPerson, MyPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/custom.error";
@@ -19,16 +19,16 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: personId });
 
     await mongooseConnection();
-    if ((await MyGroup.findOne({ _id: id })) === null) throw errors.noGroupErr;
+    if ((await Group.findOne({ _id: id })) === null) throw errors.noGroupErr;
     if ((await MyPerson.findOne({ _id: personId })) === null)
       throw errors.noPersonErr;
 
-    if ((await MyGroup.findOne({ people: personId, _id: id })) !== null)
+    if ((await Group.findOne({ people: personId, _id: id })) !== null)
       throw new CustomError("This person is already in the group", 400);
 
     context.res = {
       status: 200,
-      body: await MyGroup.findByIdAndUpdate(
+      body: await Group.findByIdAndUpdate(
         id,
         { $push: { people: personId } },
         { new: true }

@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Group, groupRequirements, MyGroup } from "../Group/group.interface";
+import { IGroup, groupRequirements, Group } from "../Group/group.interface";
 import { DBPerson } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/custom.error";
@@ -12,7 +12,7 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const group: Group = {
+    const group: IGroup = {
       name: req.body?.name,
       people: req.body?.people,
       parentGroup: req.body?.parentGroup,
@@ -24,7 +24,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200,
-      body: await MyGroup.create(group),
+      body: await Group.create(group),
     };
   } catch (err) {
     err.statusCode ??= 500;

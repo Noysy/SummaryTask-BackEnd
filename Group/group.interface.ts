@@ -15,7 +15,7 @@ group.set("toJSON", {
   },
 });
 
-type Group = {
+type IGroup = {
   name: string;
   people?: [string];
   parentGroup?: string;
@@ -38,6 +38,6 @@ const idPattern = Joi.object().keys({
     .required(),
 });
 
-const MyGroup = mongoose.model("group", group);
+const Group = mongoose.model("group", group);
 
-export { MyGroup, groupRequirements, Group, idPattern, nameLength };
+export { Group, groupRequirements, IGroup, idPattern, nameLength };
