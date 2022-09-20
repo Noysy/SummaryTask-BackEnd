@@ -13,7 +13,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const { id } = context.bindingData;
-    validateId({ id: id });
+    validateId({ id });
     await mongooseConnection();
 
     const deletedGroup = await Group.findByIdAndDelete(id);

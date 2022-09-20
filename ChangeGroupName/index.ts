@@ -14,19 +14,15 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const { id } = context.bindingData;
-    validateId({ id: id });
+    validateId({ id });
 
-    const newName = req.body?.name;
+    const name = req.body?.name;
 
-    const validation = nameLength.validate({ name: newName });
+    const validation = nameLength.validate({ name });
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
     await mongooseConnection();
-    const group = await Group.findByIdAndUpdate(
-      id,
-      { name: newName },
-      { new: true }
-    );
+    const group = await Group.findByIdAndUpdate(id, { name }, { new: true });
     if (group === null)
       throw new CustomError("There is no such group with given id", 404);
 
