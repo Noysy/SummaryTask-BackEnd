@@ -3,7 +3,7 @@ import { errors } from "../config";
 import { Group } from "../Group/group.interface";
 import {
   DBPerson,
-  MyPerson,
+  IPerson,
   Person,
   personRequirements,
 } from "../Person/person.interface";
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const person: Person = {
+    const person: IPerson = {
       name: req.body?.name,
       favoriteColor: req.body?.favoriteColor,
       favoriteAnimal: req.body?.favoriteAnimal,
@@ -37,7 +37,7 @@ const httpTrigger: AzureFunction = async function (
       if ((await Group.findOne({ _id: groupId })) === null)
         throw errors.noGroupErr;
 
-    const newPerson = await MyPerson.create({
+    const newPerson = await Person.create({
       name: person.name,
       favoriteColor: person.favoriteColor,
       favoriteAnimal: person.favoriteAnimal,

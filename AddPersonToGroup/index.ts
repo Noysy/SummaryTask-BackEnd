@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { errors } from "../config";
 import { Group } from "../Group/group.interface";
-import { DBPerson, MyPerson, validateId } from "../Person/person.interface";
+import { DBPerson, Person, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
@@ -20,7 +20,7 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
     if ((await Group.findOne({ _id: id })) === null) throw errors.noGroupErr;
-    if ((await MyPerson.findOne({ _id: personId })) === null)
+    if ((await Person.findOne({ _id: personId })) === null)
       throw errors.noPersonErr;
 
     if ((await Group.findOne({ people: personId, _id: id })) !== null)

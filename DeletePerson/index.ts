@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Group } from "../Group/group.interface";
-import { validateId, MyPerson, DBPerson } from "../Person/person.interface";
+import { validateId, Person, DBPerson } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
@@ -16,7 +16,7 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id });
 
     await mongooseConnection();
-    const person = await MyPerson.findByIdAndDelete(id);
+    const person = await Person.findByIdAndDelete(id);
     if (person === null)
       throw new CustomError("There is no such person with given id", 404);
 

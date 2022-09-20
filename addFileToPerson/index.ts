@@ -6,7 +6,7 @@ import {
   SASProtocol,
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
-import { DBPerson, MyPerson } from "../Person/person.interface";
+import { DBPerson, Person } from "../Person/person.interface";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 import multipart from "parse-multipart";
@@ -22,14 +22,14 @@ const httpTrigger: AzureFunction = async function (
   try {
     const id = context.bindingData.id;
     await mongooseConnection();
-    if ((await MyPerson.findOne({ _id: id })) === null)
+    if ((await Person.findOne({ _id: id })) === null)
       throw errors.noPersonErr;
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);
     const data = multipart.Parse(bodyBuffer, boundary)[0];
     if (
-      await MyPerson.findOne({
+      await Person.findOne({
         _id: id,
         files: { $elemMatch: { name: `${id}-${data.filename}` } },
       })
@@ -76,7 +76,7 @@ const httpTrigger: AzureFunction = async function (
       )
     ).toString();
     const SASUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${blobName}?${SASToken}`;
-    await MyPerson.findByIdAndUpdate(id, {
+    await Person.findByIdAndUpdate(id, {
       $push: { files: { name: `${id}-${data.filename}`, url: SASUrl } },
     });
 

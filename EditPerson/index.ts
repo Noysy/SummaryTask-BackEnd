@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import {
   validateId,
-  MyPerson,
+  IPerson,
   Person,
   updatePersonDetails,
   DBPerson,
@@ -20,7 +20,7 @@ const httpTrigger: AzureFunction = async function (
     const id = context.bindingData.id;
     validateId({ id });
 
-    const changes: Person = {
+    const changes: IPerson = {
       name: req.body?.name,
       favoriteColor: req.body?.favoriteColor,
       favoriteAnimal: req.body?.favoriteAnimal,
@@ -35,7 +35,7 @@ const httpTrigger: AzureFunction = async function (
 
     context.res = {
       status: 200,
-      body: await MyPerson.findByIdAndUpdate(id, changes, {new: true})
+      body: await Person.findByIdAndUpdate(id, changes, {new: true})
     };
   } catch (err) {
     err.statusCode ??= 500;

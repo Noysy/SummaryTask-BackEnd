@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import jwt from "jsonwebtoken";
 import { errors } from "../config";
-import { MyPerson } from "../Person/person.interface";
+import { Person } from "../Person/person.interface";
 import mongooseConnection from "../Util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
@@ -9,7 +9,7 @@ const httpTrigger: AzureFunction = async function (
   req: HttpRequest
 ): Promise<void> {
   await mongooseConnection();
-  const person = await MyPerson.findOne({ _id: req.params.id });
+  const person = await Person.findOne({ _id: req.params.id });
   if (person === null) throw errors.noPersonErr;
   const accessToken = jwt.sign(
     {

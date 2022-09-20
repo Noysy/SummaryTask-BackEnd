@@ -19,7 +19,7 @@ person.set("toJSON", {
   },
 });
 
-interface Person {
+interface IPerson {
   name: string;
   favoriteColor: string;
   favoriteAnimal: string;
@@ -29,7 +29,7 @@ interface Person {
   files?: FileDetails[];
 }
 
-interface DBPerson extends Person {
+interface DBPerson extends IPerson {
   id: string;
 }
 
@@ -69,14 +69,14 @@ const updatePersonDetails = Joi.object().keys({
   role: Joi.string().max(15),
 });
 
-const MyPerson = mongoose.model("person", person);
+const Person = mongoose.model("person", person);
 
 export {
   DBPerson,
-  Person,
+  IPerson,
   validateId,
   person,
-  MyPerson,
+  Person,
   personRequirements,
   updatePersonDetails,
 };

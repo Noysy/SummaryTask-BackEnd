@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { Group } from '../Group/group.interface';
-import { MyPerson, DBPerson } from '../Person/person.interface';
+import { Person, DBPerson } from '../Person/person.interface';
 import { authWrapper, userPerm } from '../Util/authorization';
 import errorHandler from '../Util/error.handling';
 import mongooseConnection from '../Util/mongoose.connection';
@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = async function (
         });
       });
 
-      if (people.length === 0) people.push(await MyPerson.findById(id));
+      if (people.length === 0) people.push(await Person.findById(id));
 
       context.res = {
         body: people,
@@ -37,7 +37,7 @@ const httpTrigger: AzureFunction = async function (
     } else if (user.role === 'ADMIN') {
       await mongooseConnection();
       context.res = {
-        body: await MyPerson.find({}),
+        body: await Person.find({}),
       };
     }
   } catch (err) {
