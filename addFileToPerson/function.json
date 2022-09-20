@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["put"],
-      "route": "people/addFileToPerson/{id}"
+      "route": "people/{id}/upload-file"
     },
     {
       "type": "http",

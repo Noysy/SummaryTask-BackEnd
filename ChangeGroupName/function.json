@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["patch"],
-      "route": "groups/updateName/{id}"
+      "route": "groups/{id}/name"
     },
     {
       "type": "http",

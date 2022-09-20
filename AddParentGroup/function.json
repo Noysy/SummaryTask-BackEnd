@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["put"],
-      "route": "groups/parent/{id}/{parentId}"
+      "route": "groups/{id}/parent/{parentId}"
     },
     {
       "type": "http",
