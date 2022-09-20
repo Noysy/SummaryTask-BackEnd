@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { MyGroup } from '../Group/GroupInterface';
-import { MyPerson, DBPerson } from '../Person/PersonInterface';
+import { MyGroup } from '../Group/group.interface';
+import { MyPerson, DBPerson } from '../Person/person.interface';
 import { authWrapper, userPerm } from '../Util/authorization';
 import errorHandler from '../Util/errorHandling';
 import mongooseConnection from '../Util/mongooseConnection';

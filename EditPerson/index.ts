@@ -5,7 +5,7 @@ import {
   Person,
   updatePersonDetails,
   DBPerson,
-} from "../Person/PersonInterface";
+} from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";

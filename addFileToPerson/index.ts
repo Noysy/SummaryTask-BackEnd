@@ -6,7 +6,7 @@ import {
   SASProtocol,
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
-import { DBPerson, MyPerson } from "../Person/PersonInterface";
+import { DBPerson, MyPerson } from "../Person/person.interface";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 import multipart from "parse-multipart";

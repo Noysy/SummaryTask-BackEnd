@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { MyPerson, Person } from "../Person/PersonInterface";
+import { MyPerson, Person } from "../Person/person.interface";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 

@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { MyGroup, nameLength } from "../Group/GroupInterface";
+import { MyGroup, nameLength } from "../Group/group.interface";
 
-import { DBPerson, validateId } from "../Person/PersonInterface";
+import { DBPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";

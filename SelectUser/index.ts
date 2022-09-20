@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import jwt from "jsonwebtoken";
 import { errors } from "../config";
-import { MyPerson } from "../Person/PersonInterface";
+import { MyPerson } from "../Person/person.interface";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
