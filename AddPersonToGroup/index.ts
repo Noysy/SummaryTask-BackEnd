@@ -20,7 +20,7 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
     if ((await MyGroup.findOne({ _id: id })) === null) throw errors.noGroupErr;
-    if ((await MyPerson.findOne({ _id: id })) === null)
+    if ((await MyPerson.findOne({ _id: personId })) === null)
       throw errors.noPersonErr;
 
     if ((await MyGroup.findOne({ people: personId, _id: id })) !== null)
