@@ -20,10 +20,9 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const id = context.bindingData.id;
+    const { id } = context.bindingData;
     await mongooseConnection();
-    if ((await Person.findOne({ _id: id })) === null)
-      throw errors.noPersonErr;
+    if ((await Person.findOne({ _id: id })) === null) throw errors.noPersonErr;
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);

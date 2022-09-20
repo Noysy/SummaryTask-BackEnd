@@ -13,9 +13,8 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const id = context.bindingData.id;
+    const { id, parentId } = context.bindingData;
     validateId({ id: id });
-    const parentId = context.bindingData.parentId;
     validateId({ id: parentId });
 
     await mongooseConnection();

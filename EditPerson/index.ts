@@ -17,7 +17,7 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const id = context.bindingData.id;
+    const { id } = context.bindingData;
     validateId({ id });
 
     const changes: IPerson = {

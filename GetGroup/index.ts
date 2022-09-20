@@ -12,7 +12,7 @@ const httpTrigger: AzureFunction = async function (
   user: DBPerson
 ): Promise<void> {
   try {
-    const id = context.bindingData.id;
+    const { id } = context.bindingData;
     validateId({ id: id });
 
     const group = await Group.findOne({ _id: id });

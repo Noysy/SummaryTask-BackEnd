@@ -12,8 +12,8 @@ const httpTrigger: AzureFunction = async function (
   user: DBPerson
 ): Promise<void> {
   try {
-    const id = context.bindingData.id;
-    validateId({ id: id });
+    const { id } = context.bindingData;
+    validateId({ id });
 
     await mongooseConnection();
     const group = await Group.findById(id).populate("people");
