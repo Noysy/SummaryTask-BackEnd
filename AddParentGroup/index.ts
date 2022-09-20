@@ -18,7 +18,9 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: parentId });
 
     await mongooseConnection();
-    if ((await Group.findOne({ _id: id })) === null) throw errors.noGroupErr;
+    const group = await Group.findOne({ _id: id });
+
+    if (group === null) throw errors.noGroupErr;
 
     if (id === parentId)
       throw new CustomError("A group can't be its own parent.", 400);
@@ -26,8 +28,9 @@ const httpTrigger: AzureFunction = async function (
     if ((await Group.findOne({ _id: parentId })) === null)
       throw errors.noGroupErr;
 
-    if (await Group.findOne({ _id: id, parentGroup: { $exists: true } }))
+    if (group.parentGroup) {
       throw new CustomError("The group already has a parent", 400);
+    }
 
     const checkPrecedingParent = async (id: string, parentGroup: string) => {
       if (id === parentGroup) return null;
