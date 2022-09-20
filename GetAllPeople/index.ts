@@ -11,8 +11,9 @@ const httpTrigger: AzureFunction = async function (
   user: DBPerson
 ): Promise<void> {
   try {
-    await mongooseConnection();
-    if (user.role === "USER") {
+    if (!user) return null;
+    else if (user.role === "USER") {
+      await mongooseConnection();
       const id = user.id;
 
       const people = [];
@@ -34,6 +35,7 @@ const httpTrigger: AzureFunction = async function (
         body: people,
       };
     } else if (user.role === "ADMIN") {
+      await mongooseConnection();
       context.res = {
         body: await MyPerson.find({}),
       };
