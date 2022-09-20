@@ -16,13 +16,18 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: id });
 
     await mongooseConnection();
-    const group = await MyGroup.findById(id);
+    const group = await MyGroup.findById(id).populate("people");
 
-    if (!group.people.includes(user.id) && user.role === "USER")
-      throw errors.noPermissionErr;
+    if (user.role === "USER") {
+      const userGroups = await MyGroup.find({ people: user.id });
+      if (
+        !userGroups.some((userGroup) => `${userGroup._id}` === `${group._id}`)
+      )
+        throw errors.noPermissionErr;
+    }
 
     context.res = {
-      body: group.populate("people"),
+      body: group,
     };
   } catch (err) {
     err.statusCode ??= 500;
