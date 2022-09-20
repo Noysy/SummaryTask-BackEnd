@@ -1,13 +1,15 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { MyGroup } from "../Group/GroupInterface";
-import { validateId, MyPerson } from "../Person/PersonInterface";
+import { validateId, MyPerson, DBPerson } from "../Person/PersonInterface";
+import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  _req: HttpRequest
+  _req: HttpRequest,
+  _user: DBPerson
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
@@ -33,4 +35,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, adminPerm);

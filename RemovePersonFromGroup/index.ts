@@ -1,15 +1,16 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { errors } from "../config";
 import { MyGroup } from "../Group/GroupInterface";
-import GroupManager from "../Group/GroupManager";
-import GroupRepository from "../Group/GroupRepository";
-import { validateId } from "../Person/PersonInterface";
+import { DBPerson, validateId } from "../Person/PersonInterface";
+import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  _req: HttpRequest
+  _req: HttpRequest,
+  _user: DBPerson
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
@@ -18,9 +19,10 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: personId });
 
     await mongooseConnection();
-    await GroupManager.getGroup(id);
 
-    if ((await GroupRepository.isPersonInGroup(id, personId)) === null)
+    if ((await MyGroup.findOne({ _id: id })) === null) throw errors.noGroupErr;
+
+    if ((await MyGroup.findOne({ people: personId, _id: id })) === null)
       throw new CustomError("There is no such person in the group", 404);
 
     context.res = {
@@ -37,4 +39,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, adminPerm);

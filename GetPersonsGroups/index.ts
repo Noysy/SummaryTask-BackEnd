@@ -1,17 +1,20 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { errors } from "../config";
 import { MyGroup } from "../Group/GroupInterface";
-import { validateId } from "../Person/PersonInterface";
-import { adminAuth, anyAuth, jwtDecode } from "../Util/authorization";
+import { DBPerson, validateId } from "../Person/PersonInterface";
+import { authWrapper, userPerm } from "../Util/authorization";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  _req: HttpRequest
+  _req: HttpRequest,
+  user: DBPerson
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
     validateId({ id: id });
+    if (!id === id && user.role === "USER") throw errors.noPermissionErr;
 
     await mongooseConnection();
     context.res = {
@@ -23,4 +26,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, userPerm);

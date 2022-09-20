@@ -5,8 +5,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": ["put"],
-      "route": "groups/parent/{id}/{parentId}"
+      "methods": ["get"],
+      "route": "people/list"
     },
     {
       "type": "http",
@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/AddParentGroup/index.js"
+  "scriptFile": "../dist/GetAllPeopleList/index.js"
 }

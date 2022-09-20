@@ -6,21 +6,24 @@ import {
   SASProtocol,
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
-import { MyPerson } from "../Person/PersonInterface";
-import PersonManager from "../Person/PersonManager";
+import { DBPerson, MyPerson } from "../Person/PersonInterface";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 import multipart from "parse-multipart";
 import CustomError from "../Util/customError";
+import { authWrapper, userPerm } from "../Util/authorization";
+import { errors } from "../config";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  req: HttpRequest,
+  _user: DBPerson
 ): Promise<void> {
   try {
     const id = context.bindingData.id;
     await mongooseConnection();
-    await PersonManager.getPerson(id);
+    if ((await MyPerson.findOne({ _id: id })) === null)
+      throw errors.noPersonErr;
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);
@@ -87,4 +90,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, userPerm);

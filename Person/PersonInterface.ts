@@ -29,6 +29,10 @@ interface Person {
   files?: FileDetails[];
 }
 
+interface DBPerson extends Person {
+  id: string;
+}
+
 interface FileDetails {
   name: string;
   url: string;
@@ -68,6 +72,7 @@ const updatePersonDetails = Joi.object().keys({
 const MyPerson = mongoose.model("person", person);
 
 export {
+  DBPerson,
   Person,
   validateId,
   person,

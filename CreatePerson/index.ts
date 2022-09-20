@@ -1,17 +1,21 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import GroupManager from "../Group/GroupManager";
+import { errors } from "../config";
+import { MyGroup } from "../Group/GroupInterface";
 import {
+  DBPerson,
   MyPerson,
   Person,
   personRequirements,
 } from "../Person/PersonInterface";
+import { adminPerm, authWrapper } from "../Util/authorization";
 import CustomError from "../Util/customError";
 import errorHandler from "../Util/errorHandling";
 import mongooseConnection from "../Util/mongooseConnection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  req: HttpRequest,
+  _user: DBPerson
 ): Promise<void> {
   try {
     const person: Person = {
@@ -29,7 +33,9 @@ const httpTrigger: AzureFunction = async function (
     if (validation.error) throw new CustomError(validation.error.message, 400);
 
     await mongooseConnection();
-    if (groupId) await GroupManager.getGroup(groupId);
+    if (groupId)
+      if ((await MyGroup.findOne({ _id: groupId })) === null)
+        throw errors.noGroupErr;
 
     const newPerson = await MyPerson.create({
       name: person.name,
@@ -52,4 +58,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default httpTrigger;
+export default authWrapper(httpTrigger, adminPerm);
