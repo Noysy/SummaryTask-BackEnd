@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import CustomError from "./customError";
+import CustomError from "./custom.error";
 import configFile, { errors } from "../config";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import errorHandler from "./errorHandling";
+import errorHandler from "./error.handling";
 
 export const jwtDecode = (token: string) => {
   try {

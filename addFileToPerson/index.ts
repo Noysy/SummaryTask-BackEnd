@@ -7,10 +7,10 @@ import {
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
 import { DBPerson, MyPerson } from "../Person/person.interface";
-import errorHandler from "../Util/errorHandling";
-import mongooseConnection from "../Util/mongooseConnection";
+import errorHandler from "../Util/error.handling";
+import mongooseConnection from "../Util/mongoose.connection";
 import multipart from "parse-multipart";
-import CustomError from "../Util/customError";
+import CustomError from "../Util/custom.error";
 import { authWrapper, userPerm } from "../Util/authorization";
 import { errors } from "../config";
 

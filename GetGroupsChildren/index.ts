@@ -3,8 +3,8 @@ import configFile, { errors } from "../config";
 import { MyGroup } from "../Group/group.interface";
 import { DBPerson, validateId } from "../Person/person.interface";
 import { authWrapper, userPerm } from "../Util/authorization";
-import errorHandler from "../Util/errorHandling";
-import mongooseConnection from "../Util/mongooseConnection";
+import errorHandler from "../Util/error.handling";
+import mongooseConnection from "../Util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,

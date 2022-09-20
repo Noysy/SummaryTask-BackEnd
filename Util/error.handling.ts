@@ -1,5 +1,5 @@
 import { Context } from "@azure/functions";
-import CustomError from "./customError";
+import CustomError from "./custom.error";
 
 const errorHandler = (context: Context, err: CustomError) => {
   context.res = {

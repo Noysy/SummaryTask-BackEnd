@@ -1,6 +1,6 @@
 import Joi from "joi";
 import mongoose from "mongoose";
-import CustomError from "../Util/customError";
+import CustomError from "../Util/custom.error";
 
 const person = new mongoose.Schema({
   name: { type: String, required: true },

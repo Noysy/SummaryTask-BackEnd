@@ -1,4 +1,4 @@
-import CustomError from "./Util/customError";
+import CustomError from "./Util/custom.error";
 
 const configFile = {
   mongooseConnection: "mongodb://localhost:27017/GroupsAndPeople",

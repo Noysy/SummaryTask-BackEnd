@@ -7,9 +7,9 @@ import {
   DBPerson,
 } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/customError";
-import errorHandler from "../Util/errorHandling";
-import mongooseConnection from "../Util/mongooseConnection";
+import CustomError from "../Util/custom.error";
+import errorHandler from "../Util/error.handling";
+import mongooseConnection from "../Util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,

@@ -1,7 +1,7 @@
 import { AzureFunction, Context } from "@azure/functions";
 import { QueueServiceClient } from "@azure/storage-queue";
 import { MyGroup } from "../Group/group.interface";
-import errorHandler from "../Util/errorHandling";
+import errorHandler from "../Util/error.handling";
 
 const timerTrigger: AzureFunction = async function (
   context: Context,
