@@ -24,14 +24,16 @@ const httpTrigger: AzureFunction = async function (
     if (id === parentId)
       throw new validationError("A group can't be its own parent.");
 
-    if ((await Group.findOne({ _id: parentId })) === null)
-      throw new notFoundError("group");
+    if (!(await Group.findById(parentId))) throw new notFoundError("group");
 
     if (group.parentGroup) {
       throw new validationError("The group already has a parent");
     }
 
-    const checkPrecedingParent = async (groupId: string, parentGroup: string) => {
+    const checkPrecedingParent = async (
+      groupId: string,
+      parentGroup: string
+    ) => {
       if (groupId === parentGroup) return false;
 
       if (
@@ -49,16 +51,14 @@ const httpTrigger: AzureFunction = async function (
       } else return false;
     };
 
-    if ((await checkPrecedingParent(id, parentId)) === undefined)
+    if (!(await checkPrecedingParent(id, parentId)))
       throw new validationError("A group can't be it's own preceding parent");
 
+    group.parentGroup = parentId;
+    await group.save();
     context.res = {
       status: 200,
-      body: await Group.findByIdAndUpdate(
-        id,
-        { parentGroup: parentId },
-        { new: true }
-      ),
+      body: group,
     };
   } catch (err) {
     err.statusCode ??= 500;
