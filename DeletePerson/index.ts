@@ -19,9 +19,7 @@ const httpTrigger: AzureFunction = async function (
     const person = await Person.findByIdAndDelete(id);
     if (person === null) throw new notFoundError("person");
 
-    (await Group.find({ people: id }, { _id: 1 })).forEach(async (groupId) => {
-      await Group.findByIdAndUpdate(groupId, { $pull: { people: id } });
-    });
+    await Group.updateMany({ people: id }, { $pull: { people: id } });
 
     context.res = {
       body: person,
