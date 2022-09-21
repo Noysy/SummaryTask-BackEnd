@@ -32,7 +32,7 @@ const httpTrigger: AzureFunction = async function (
     }
 
     const checkPrecedingParent = async (groupId: string, parentGroup: string) => {
-      if (groupId === parentGroup) return null;
+      if (groupId === parentGroup) return false;
 
       if (
         await Group.findOne({
