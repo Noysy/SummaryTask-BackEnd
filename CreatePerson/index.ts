@@ -53,7 +53,7 @@ const httpTrigger: AzureFunction = async function (
     };
 
     if (groupId)
-      context.bindings.bothIds = { person: newPerson._id, group: groupId };
+      context.bindings.addPersonToGroupQueue = { person: newPerson._id, group: groupId };
   } catch (err) {
     err.statusCode ??= 500;
     errorHandler(context, err);

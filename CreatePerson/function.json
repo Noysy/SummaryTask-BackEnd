@@ -16,7 +16,7 @@
     {
       "type": "queue",
       "direction": "out",
-      "name": "bothIds",
+      "name": "addPersonToGroupQueue",
       "queueName": "add-person-to-group-queue",
       "connection": "AzureWebJobsStorage"
     }
