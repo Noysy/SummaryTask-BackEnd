@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["delete"],
-      "route": "groups/{id}/parent"
+      "route": "group/{id}/parent"
     },
     {
       "type": "http",

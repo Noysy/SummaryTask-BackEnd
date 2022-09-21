@@ -6,7 +6,7 @@
         "direction": "in",
         "name": "req",
         "methods": ["get"],
-        "route": "people/{personId}/select"
+        "route": "person/{personId}/select"
       },
       {
         "type": "http",
