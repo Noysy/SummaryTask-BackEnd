@@ -16,17 +16,32 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id });
     await mongooseConnection();
 
-    const group = await Group.findOne({ _id: id });
-    if (group === null) throw new notFoundError("group");
+    const group = await Group.findById(id);
+
+    if (!group) throw new notFoundError("group");
+
     if (!group.people.includes(user.id) && user.role === "USER")
       throw new noPermissionError();
 
+    const getGroupsChildren = async (groupId: string) => {
+      const children = await Group.find({ parentGroup: groupId });
+
+      if (children)
+        return Promise.all(
+          children.map(async (child) => ({
+            ...child.toJSON(),
+            children: await getGroupsChildren(child.id),
+          }))
+        );
+
+      return children;
+    };
+
+    const hierarchy = { ...group.toJSON(), children: await getGroupsChildren(id) };
+
     context.res = {
       status: 200,
-      body: await Group.find({ parentGroup: id }).select({
-        people: 1,
-        name: 1,
-      }),
+      body: hierarchy,
     };
   } catch (err) {
     errorHandler(context, err);
