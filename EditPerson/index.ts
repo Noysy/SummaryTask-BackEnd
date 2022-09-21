@@ -7,7 +7,7 @@ import {
   DBPerson,
 } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import { validationError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -25,17 +25,17 @@ const httpTrigger: AzureFunction = async function (
       favoriteColor: req.body?.favoriteColor,
       favoriteAnimal: req.body?.favoriteAnimal,
       favoriteFood: req.body?.favoriteFood,
-      role: req.body?.role
+      role: req.body?.role,
     };
 
     const validation = updatePersonDetails.validate(changes);
-    if (validation.error) throw new CustomError(validation.error.message, 400);
+    if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
 
     context.res = {
       status: 200,
-      body: await Person.findByIdAndUpdate(id, changes, {new: true})
+      body: await Person.findByIdAndUpdate(id, changes, { new: true }),
     };
   } catch (err) {
     err.statusCode ??= 500;

@@ -2,7 +2,7 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { IGroup, groupRequirements, Group } from "../Group/group.interface";
 import { DBPerson } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import { validationError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
       parentGroup: req.body?.parentGroup,
     };
     const validation = groupRequirements.validate(group);
-    if (validation.error) throw new CustomError(validation.error.message, 400);
+    if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
 

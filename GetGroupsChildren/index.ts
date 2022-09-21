@@ -1,8 +1,8 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import configFile, { errors } from "../config";
 import { Group } from "../Group/group.interface";
 import { DBPerson, validateId } from "../Person/person.interface";
 import { authWrapper, userPerm } from "../Util/authorization";
+import { noPermissionError, notFoundError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -17,9 +17,9 @@ const httpTrigger: AzureFunction = async function (
     await mongooseConnection();
 
     const group = await Group.findOne({ _id: id });
-    if (group === null) throw errors.noGroupErr;
+    if (group === null) throw new notFoundError("group");
     if (!group.people.includes(user.id) && user.role === "USER")
-      throw errors.noPermissionErr;
+      throw new noPermissionError();
 
     context.res = {
       status: 200,

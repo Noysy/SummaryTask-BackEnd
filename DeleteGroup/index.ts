@@ -2,7 +2,7 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Group } from "../Group/group.interface";
 import { DBPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import { notFoundError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -19,7 +19,7 @@ const httpTrigger: AzureFunction = async function (
     const deletedGroup = await Group.findByIdAndDelete(id);
 
     if (deletedGroup === null)
-      throw new CustomError("There is no such group with given id", 404);
+      throw new notFoundError("group");
 
     await Group.updateMany(
       { parentGroup: id },

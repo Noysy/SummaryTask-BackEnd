@@ -1,27 +1,26 @@
 import jwt from "jsonwebtoken";
-import CustomError from "./custom.error";
-import configFile, { errors } from "../config";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import errorHandler from "./error.handling";
+import { noPermissionError } from "./custom.error";
 
 export const jwtDecode = (token: string) => {
   try {
     const jwtDecoded = jwt.verify(token, process.env.TOKEN_SECRET);
     return jwtDecoded;
   } catch (err) {
-    throw errors.noPermissionErr;
+    throw new noPermissionError();
   }
 };
 
 export const userPerm = (role: string) => {
   if (role !== "ADMIN" && role !== "USER") {
-    throw errors.noPermissionErr;
+    throw new noPermissionError();
   }
 };
 
 export const adminPerm = (role: string) => {
   if (role !== "ADMIN") {
-    throw errors.noPermissionErr;
+    throw new noPermissionError();
   }
 };
 

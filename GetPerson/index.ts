@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { errors } from "../config";
 import { DBPerson, Person, validateId } from "../Person/person.interface";
 import { authWrapper, userPerm } from "../Util/authorization";
+import { noPermissionError, notFoundError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -13,11 +13,11 @@ const httpTrigger: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     validateId({ id });
-    if (!id === id && user.role === "USER") throw errors.noPermissionErr;
+    if (!id === id && user.role === "USER") throw new noPermissionError();
 
     await mongooseConnection();
     const person = await Person.findOne({ _id: id });
-    if (person === null) throw errors.noPersonErr;
+    if (person === null) throw new notFoundError("person");
 
     context.res = {
       body: person,

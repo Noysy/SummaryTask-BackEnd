@@ -1,9 +1,11 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { errors } from "../config";
 import { Group } from "../Group/group.interface";
 import { DBPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import {
+  notFoundError,
+  validationError,
+} from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -17,13 +19,14 @@ const httpTrigger: AzureFunction = async function (
     validateId({ id: id });
 
     await mongooseConnection();
-    if ((await Group.findOne({ _id: id })) === null) throw errors.noGroupErr;
+    if ((await Group.findOne({ _id: id })) === null)
+      throw new notFoundError("group");
 
     if (
       (await Group.findOne({ _id: id, parentGroup: { $exists: true } })) ===
       null
     )
-      throw new CustomError("This group does not have a parent", 404);
+      throw new validationError("This group does not have a parent");
 
     context.res = {
       status: 200,

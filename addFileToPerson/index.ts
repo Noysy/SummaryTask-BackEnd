@@ -10,9 +10,8 @@ import { DBPerson, Person } from "../Person/person.interface";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 import multipart from "parse-multipart";
-import CustomError from "../Util/custom.error";
+import { CustomError, notFoundError, validationError } from "../Util/custom.error";
 import { authWrapper, userPerm } from "../Util/authorization";
-import { errors } from "../config";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -22,7 +21,8 @@ const httpTrigger: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     await mongooseConnection();
-    if ((await Person.findOne({ _id: id })) === null) throw errors.noPersonErr;
+    if ((await Person.findOne({ _id: id })) === null)
+      throw new notFoundError("person");
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);
@@ -33,7 +33,7 @@ const httpTrigger: AzureFunction = async function (
         files: { $elemMatch: { name: `${id}-${data.filename}` } },
       })
     )
-      throw new CustomError("You can't upload the same image! smh", 400);
+      throw new validationError("You can't upload the same image! smh");
 
     const blobServiceClient = BlobServiceClient.fromConnectionString(
       process.env.AzureWebJobsStorage

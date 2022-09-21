@@ -1,6 +1,6 @@
 import Joi from "joi";
 import mongoose from "mongoose";
-import CustomError from "../Util/custom.error";
+import { validationError } from "../Util/custom.error";
 
 const person = new mongoose.Schema({
   name: { type: String, required: true },
@@ -46,7 +46,7 @@ const idPattern = Joi.object().keys({
 
 const validateId = (id: { id: string }) => {
   const validation = idPattern.validate(id);
-  if (validation.error) throw new CustomError(validation.error.message, 400);
+  if (validation.error) throw new validationError(validation.error.message);
 };
 
 const personRequirements = Joi.object().keys({

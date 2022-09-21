@@ -2,7 +2,7 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { Group } from "../Group/group.interface";
 import { validateId, Person, DBPerson } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import { notFoundError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -17,14 +17,11 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
     const person = await Person.findByIdAndDelete(id);
-    if (person === null)
-      throw new CustomError("There is no such person with given id", 404);
+    if (person === null) throw new notFoundError("person");
 
-    (await Group.find({ people: id }, { _id: 1 })).forEach(
-      async (groupId) => {
-        await Group.findByIdAndUpdate(groupId, { $pull: { people: id } });
-      }
-    );
+    (await Group.find({ people: id }, { _id: 1 })).forEach(async (groupId) => {
+      await Group.findByIdAndUpdate(groupId, { $pull: { people: id } });
+    });
 
     context.res = {
       body: person,

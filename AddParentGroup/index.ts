@@ -1,9 +1,8 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { errors } from "../config";
 import { Group } from "../Group/group.interface";
 import { DBPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import { notFoundError, validationError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -20,16 +19,16 @@ const httpTrigger: AzureFunction = async function (
     await mongooseConnection();
     const group = await Group.findOne({ _id: id });
 
-    if (group === null) throw errors.noGroupErr;
+    if (group === null) throw new notFoundError("group");
 
     if (id === parentId)
-      throw new CustomError("A group can't be its own parent.", 400);
+      throw new validationError("A group can't be its own parent.");
 
     if ((await Group.findOne({ _id: parentId })) === null)
-      throw errors.noGroupErr;
+      throw new notFoundError("group");
 
     if (group.parentGroup) {
-      throw new CustomError("The group already has a parent", 400);
+      throw new validationError("The group already has a parent");
     }
 
     const checkPrecedingParent = async (id: string, parentGroup: string) => {
@@ -51,7 +50,7 @@ const httpTrigger: AzureFunction = async function (
     };
 
     if ((await checkPrecedingParent(id, parentId)) === undefined)
-      throw new CustomError("A group can't be it's own preceding parent", 400);
+      throw new validationError("A group can't be it's own preceding parent");
 
     context.res = {
       status: 200,

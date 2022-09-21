@@ -1,8 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { errors } from "../config";
+
 import { Group } from "../Group/group.interface";
 import { DBPerson, validateId } from "../Person/person.interface";
 import { authWrapper, userPerm } from "../Util/authorization";
+import { noPermissionError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -23,7 +24,7 @@ const httpTrigger: AzureFunction = async function (
       if (
         !userGroups.some((userGroup) => `${userGroup._id}` === `${group._id}`)
       )
-        throw errors.noPermissionErr;
+        throw new noPermissionError();
     }
 
     context.res = {

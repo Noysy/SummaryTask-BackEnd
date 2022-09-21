@@ -1,5 +1,4 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { errors } from "../config";
 import { Group } from "../Group/group.interface";
 import {
   DBPerson,
@@ -8,7 +7,10 @@ import {
   personRequirements,
 } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import {
+  notFoundError,
+  validationError,
+} from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -30,12 +32,12 @@ const httpTrigger: AzureFunction = async function (
     const groupId = person.group;
 
     const validation = personRequirements.validate(person);
-    if (validation.error) throw new CustomError(validation.error.message, 400);
+    if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
     if (groupId)
       if ((await Group.findOne({ _id: groupId })) === null)
-        throw errors.noGroupErr;
+        throw new notFoundError("group");
 
     const newPerson = await Person.create({
       name: person.name,

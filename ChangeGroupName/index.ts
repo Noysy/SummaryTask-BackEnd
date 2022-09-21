@@ -3,7 +3,7 @@ import { Group, nameLength } from "../Group/group.interface";
 
 import { DBPerson, validateId } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import CustomError from "../Util/custom.error";
+import { notFoundError, validationError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -19,12 +19,12 @@ const httpTrigger: AzureFunction = async function (
     const name = req.body?.name;
 
     const validation = nameLength.validate({ name });
-    if (validation.error) throw new CustomError(validation.error.message, 400);
+    if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
     const group = await Group.findByIdAndUpdate(id, { name }, { new: true });
     if (group === null)
-      throw new CustomError("There is no such group with given id", 404);
+    throw new notFoundError("group");
 
     context.res = {
       status: 200,
