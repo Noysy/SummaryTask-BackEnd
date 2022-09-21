@@ -7,10 +7,7 @@ import {
   personRequirements,
 } from "../Person/person.interface";
 import { adminPerm, authWrapper } from "../Util/authorization";
-import {
-  notFoundError,
-  validationError,
-} from "../Util/custom.error";
+import { notFoundError, validationError } from "../Util/custom.error";
 import errorHandler from "../Util/error.handling";
 import mongooseConnection from "../Util/mongoose.connection";
 
@@ -39,13 +36,8 @@ const httpTrigger: AzureFunction = async function (
       if ((await Group.findOne({ _id: groupId })) === null)
         throw new notFoundError("group");
 
-    const newPerson = await Person.create({
-      name: person.name,
-      favoriteColor: person.favoriteColor,
-      favoriteAnimal: person.favoriteAnimal,
-      favoriteFood: person.favoriteFood,
-      role: person.role,
-    });
+    const { group, ...personToCreate } = person;
+    const newPerson = await Person.create(personToCreate);
 
     context.res = {
       status: 200,
@@ -53,7 +45,10 @@ const httpTrigger: AzureFunction = async function (
     };
 
     if (groupId)
-      context.bindings.addPersonToGroupQueue = { person: newPerson._id, group: groupId };
+      context.bindings.addPersonToGroupQueue = {
+        person: newPerson._id,
+        group: groupId,
+      };
   } catch (err) {
     err.statusCode ??= 500;
     errorHandler(context, err);
