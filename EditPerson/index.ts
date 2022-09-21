@@ -38,7 +38,6 @@ const httpTrigger: AzureFunction = async function (
       body: await Person.findByIdAndUpdate(id, changes, { new: true }),
     };
   } catch (err) {
-    err.statusCode ??= 500;
     errorHandler(context, err);
   }
 };

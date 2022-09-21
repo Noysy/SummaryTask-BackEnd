@@ -84,7 +84,6 @@ const httpTrigger: AzureFunction = async function (
       body: { name: data.filename, url: SASUrl },
     };
   } catch (err) {
-    err.statusCode ??= 500;
     errorHandler(context, err);
   }
 };

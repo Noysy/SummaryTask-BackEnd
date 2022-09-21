@@ -25,7 +25,6 @@ const httpTrigger: AzureFunction = async function (
       body: person,
     };
   } catch (err) {
-    err.statusCode ??= 500;
     errorHandler(context, err);
   }
 };

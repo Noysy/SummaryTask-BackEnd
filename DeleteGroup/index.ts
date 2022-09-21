@@ -31,7 +31,6 @@ const httpTrigger: AzureFunction = async function (
       body: deletedGroup,
     };
   } catch (err) {
-    err.statusCode ??= 500;
     errorHandler(context, err);
   }
 };
