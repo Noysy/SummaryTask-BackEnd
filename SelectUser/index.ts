@@ -6,10 +6,11 @@ import mongooseConnection from "../Util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  _req: HttpRequest
 ): Promise<void> {
   await mongooseConnection();
-  const person = await Person.findOne({ _id: req.params.id });
+  const person = await Person.findOne({ _id: context.bindingData.personId });
+
   if (person === null) throw new noPermissionError();
   const accessToken = jwt.sign(
     {

@@ -31,8 +31,8 @@ const httpTrigger: AzureFunction = async function (
       throw new validationError("The group already has a parent");
     }
 
-    const checkPrecedingParent = async (id: string, parentGroup: string) => {
-      if (id === parentGroup) return null;
+    const checkPrecedingParent = async (groupId: string, parentGroup: string) => {
+      if (groupId === parentGroup) return null;
 
       if (
         await Group.findOne({
@@ -45,7 +45,7 @@ const httpTrigger: AzureFunction = async function (
           _id: 0,
         });
 
-        await checkPrecedingParent(id, String(parent?.parentGroup));
+        await checkPrecedingParent(groupId, String(parent?.parentGroup));
       } else return false;
     };
 
