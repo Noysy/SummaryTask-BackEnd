@@ -18,7 +18,7 @@ const GetPopulatedGroup: AzureFunction = async function (
     validateId(id);
 
     await mongooseConnection();
-    const group = await Group.findById(id).populate("people").populate("group");
+    const group = await Group.findById(id).populate("people").populate("parentGroup");
 
     if (user.role === "USER") {
       const userGroups = await Group.find({ people: user.id });
