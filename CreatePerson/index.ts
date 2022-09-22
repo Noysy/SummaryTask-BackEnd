@@ -17,18 +17,9 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const person: IPerson = {
-      name: req.body?.name,
-      favoriteColor: req.body?.favoriteColor,
-      favoriteAnimal: req.body?.favoriteAnimal,
-      favoriteFood: req.body?.favoriteFood,
-      role: req.body?.role,
-      group: req.body?.group,
-    };
+    const groupId = req.body?.group;
 
-    const groupId = person.group;
-
-    const validation = personRequirements.validate(person);
+    const validation = personRequirements.validate(req.body);
     if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
@@ -36,7 +27,8 @@ const httpTrigger: AzureFunction = async function (
       if ((await Group.findOne({ _id: groupId })) === null)
         throw new notFoundError("group");
 
-    const { group, ...personToCreate } = person;
+    const { group, ...personToCreate } = req.body;
+    
     const newPerson = await Person.create(personToCreate);
 
     context.res = {
