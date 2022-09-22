@@ -6,7 +6,7 @@ import {
   DBPerson,
 } from "../person/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
-import { validationError } from "../util/custom.error";
+import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
@@ -20,22 +20,17 @@ const httpTrigger: AzureFunction = async function (
     const { id } = context.bindingData;
     validateId(id);
 
-    const changes: IPerson = {
-      name: req.body?.name,
-      favoriteColor: req.body?.favoriteColor,
-      favoriteAnimal: req.body?.favoriteAnimal,
-      favoriteFood: req.body?.favoriteFood,
-      role: req.body?.role,
-    };
-
-    const validation = updatePersonDetails.validate(changes);
+    const validation = updatePersonDetails.validate(req.body);
     if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
 
+    const person = await Person.findByIdAndUpdate(id, req.body, { new: true });
+    if (!person) throw new notFoundError("person");
+
     context.res = {
       status: 200,
-      body: await Person.findByIdAndUpdate(id, changes, { new: true }),
+      body: person,
     };
   } catch (err) {
     errorHandler(context, err);
