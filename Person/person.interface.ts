@@ -32,7 +32,7 @@ const personRequirements = Joi.object().keys({
   favoriteAnimal: Joi.string().required().max(15),
   favoriteFood: Joi.string().required().max(15),
   role: Joi.string().required().max(15),
-  group: idPattern.allow(null, ""),
+  group: idPattern.allow(""),
   files: Joi.array().items(Joi.string()),
 });
 
