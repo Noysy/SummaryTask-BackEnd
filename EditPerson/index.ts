@@ -29,7 +29,6 @@ const httpTrigger: AzureFunction = async function (
     if (!person) throw new notFoundError("person");
 
     context.res = {
-      status: 200,
       body: person,
     };
   } catch (err) {

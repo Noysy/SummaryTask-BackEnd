@@ -27,7 +27,6 @@ const httpTrigger: AzureFunction = async function (
     );
 
     context.res = {
-      status: 200,
       body: deletedGroup,
     };
   } catch (err) {

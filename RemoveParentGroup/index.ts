@@ -29,7 +29,6 @@ const httpTrigger: AzureFunction = async function (
       throw new validationError("This group does not have a parent");
 
     context.res = {
-      status: 200,
       body: await Group.findByIdAndUpdate(
         id,
         { $unset: { parentGroup: 1 } },

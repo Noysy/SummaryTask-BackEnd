@@ -25,7 +25,6 @@ const httpTrigger: AzureFunction = async function (
       throw new notFoundError("person");
 
     context.res = {
-      status: 200,
       body: await Group.findByIdAndUpdate(
         id,
         { $pull: { people: personId } },

@@ -49,7 +49,6 @@ const httpTrigger: AzureFunction = async function (
     group.parentGroup = parentId;
     await group.save();
     context.res = {
-      status: 200,
       body: group,
     };
   } catch (err) {

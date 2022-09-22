@@ -26,7 +26,6 @@ const httpTrigger: AzureFunction = async function (
       throw new validationError("This person is already in the group");
 
     context.res = {
-      status: 200,
       body: await Group.findByIdAndUpdate(
         id,
         { $push: { people: personId } },

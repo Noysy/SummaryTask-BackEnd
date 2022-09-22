@@ -26,7 +26,6 @@ const httpTrigger: AzureFunction = async function (
     if (!group) throw new notFoundError("group");
 
     context.res = {
-      status: 200,
       body: group,
     };
   } catch (err) {
