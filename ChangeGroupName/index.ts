@@ -1,9 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Group } from "../group/group.interface";
 import { DBPerson, validateId } from "../person/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
+import Group from "../util/group.model";
 import { nameLength } from "../util/joi";
 import mongooseConnection from "../util/mongoose.connection";
 

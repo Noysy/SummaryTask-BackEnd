@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Group } from "../group/group.interface";
+import Group from "../util/group.model";
 import { DBPerson, validateId } from "../person/person.interface";
 import { authWrapper, userPerm } from "../util/authorization";
 import { noPermissionError } from "../util/custom.error";

@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Group } from "../group/group.interface";
+import Group from "../util/group.model";
 import {
   DBPerson,
   IPerson,
