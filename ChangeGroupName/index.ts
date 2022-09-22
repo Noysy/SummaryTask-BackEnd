@@ -23,7 +23,7 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
     const group = await Group.findByIdAndUpdate(id, { name }, { new: true });
-    if (group === null) throw new notFoundError("group");
+    if (!group) throw new notFoundError("group");
 
     context.res = {
       status: 200,
