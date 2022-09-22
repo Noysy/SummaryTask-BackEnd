@@ -24,7 +24,7 @@ const httpTrigger: AzureFunction = async function (
     await mongooseConnection();
 
     context.res = {
-      status: 200,
+      status: 201,
       body: await Group.create(group),
     };
   } catch (err) {

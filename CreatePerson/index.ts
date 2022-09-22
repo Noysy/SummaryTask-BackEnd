@@ -17,7 +17,7 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const groupId = req.body?.group;
+    const { group: groupId } = req.body;
 
     const validation = personRequirements.validate(req.body);
     if (validation.error) throw new validationError(validation.error.message);
@@ -28,11 +28,11 @@ const httpTrigger: AzureFunction = async function (
         throw new notFoundError("group");
 
     const { group, ...personToCreate } = req.body;
-    
+
     const newPerson = await Person.create(personToCreate);
 
     context.res = {
-      status: 200,
+      status: 201,
       body: newPerson,
     };
 
