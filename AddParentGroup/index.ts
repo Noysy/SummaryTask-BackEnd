@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { DBPerson, validateId } from "../person/person.interface";
+import { IPerson, validateId } from "../person/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
@@ -9,7 +9,7 @@ import mongooseConnection from "../util/mongoose.connection";
 const httpTrigger: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
-  _user: DBPerson
+  _user: IPerson
 ): Promise<void> {
   try {
     const { id, parentId } = context.bindingData;
@@ -17,9 +17,9 @@ const httpTrigger: AzureFunction = async function (
     validateId(parentId);
 
     await mongooseConnection();
-    const group = await Group.findOne({ _id: id });
+    const group = await Group.findById(id);
 
-    if (group === null) throw new notFoundError("group");
+    if (!group) throw new notFoundError("group");
 
     if (id === parentId)
       throw new validationError("A group can't be its own parent.");

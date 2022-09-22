@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { validateId, DBPerson } from "../person/person.interface";
+import { validateId, IPerson } from "../person/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
@@ -10,7 +10,7 @@ import Person from "../util/person.model";
 const httpTrigger: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
-  _user: DBPerson
+  _user: IPerson
 ): Promise<void> {
   try {
     const { id } = context.bindingData;

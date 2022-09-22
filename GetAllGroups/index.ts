@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import Group from "../util/group.model";
-import { DBPerson } from "../person/person.interface";
+import { IPerson } from "../person/person.interface";
 import { authWrapper, userPerm } from "../util/authorization";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
@@ -8,7 +8,7 @@ import mongooseConnection from "../util/mongoose.connection";
 const httpTrigger: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
-  user: DBPerson
+  user: IPerson
 ): Promise<void> {
   try {
     const id = user.id;

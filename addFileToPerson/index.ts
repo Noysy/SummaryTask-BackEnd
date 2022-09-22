@@ -6,31 +6,34 @@ import {
   SASProtocol,
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
-import { DBPerson } from "../person/person.interface";
+import { IPerson } from "../person/person.interface";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import multipart from "parse-multipart";
-import { CustomError, notFoundError, validationError } from "../util/custom.error";
+import {
+  CustomError,
+  notFoundError,
+  validationError,
+} from "../util/custom.error";
 import { authWrapper, userPerm } from "../util/authorization";
 import Person from "../util/person.model";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
-  _user: DBPerson
+  _user: IPerson
 ): Promise<void> {
   try {
     const { id } = context.bindingData;
     await mongooseConnection();
-    if ((await Person.findOne({ _id: id })) === null)
-      throw new notFoundError("person");
+    if (!(await Person.findById(id))) throw new notFoundError("person");
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);
     const data = multipart.Parse(bodyBuffer, boundary)[0];
     if (
-      await Person.findOne({
-        _id: id,
+      await Person.findById({
+        id,
         files: { $elemMatch: { name: `${id}-${data.filename}` } },
       })
     )

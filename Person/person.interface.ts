@@ -10,9 +10,6 @@ interface IPerson {
   role: string;
   group?: string;
   files?: FileDetails[];
-}
-
-interface DBPerson extends IPerson {
   id: string;
 }
 
@@ -45,7 +42,6 @@ const updatePersonDetails = Joi.object().keys({
 });
 
 export {
-  DBPerson,
   IPerson,
   validateId,
   personRequirements,

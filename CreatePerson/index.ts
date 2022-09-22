@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import Group from "../util/group.model";
 import {
-  DBPerson,
   IPerson,
   personRequirements,
 } from "../person/person.interface";
@@ -14,7 +13,7 @@ import Person from "../util/person.model";
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
-  _user: DBPerson
+  _user: IPerson
 ): Promise<void> {
   try {
     const { group: groupId } = req.body;
