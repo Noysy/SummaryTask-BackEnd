@@ -15,11 +15,11 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
+    "@azure/functions": "^3.0.0",
     "parse-multipart": "^1.0.4"
   },
   "devDependencies": {
-    "@azure/functions": "^3.0.0",
-    "@types/node": "16.x",
+    "@types/node": "^16.x",
     "typescript": "^4.0.0"
   }
 }
