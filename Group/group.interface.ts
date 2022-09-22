@@ -1,5 +1,4 @@
 import Joi from "joi";
-import mongoose from "mongoose";
 import { idPattern } from "../util/joi";
 
 type IGroup = {

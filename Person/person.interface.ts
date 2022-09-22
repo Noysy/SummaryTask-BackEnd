@@ -1,9 +1,6 @@
 import Joi from "joi";
-import mongoose from "mongoose";
 import { validationError } from "../util/custom.error";
 import { idPattern } from "../util/joi";
-
-
 
 interface IPerson {
   name: string;
@@ -24,7 +21,7 @@ interface FileDetails {
   url: string;
 }
 
-const validateId = (id: { id: string }) => {
+const validateId = (id: string) => {
   const validation = idPattern.validate(id);
   if (validation.error) throw new validationError(validation.error.message);
 };
@@ -46,7 +43,6 @@ const updatePersonDetails = Joi.object().keys({
   favoriteFood: Joi.string().max(15),
   role: Joi.string().max(15),
 });
-
 
 export {
   DBPerson,
