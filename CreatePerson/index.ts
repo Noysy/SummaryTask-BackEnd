@@ -3,7 +3,7 @@ import Group from "../util/group.model";
 import {
   IPerson,
   personRequirements,
-} from "../person/person.interface";
+} from "../util/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";

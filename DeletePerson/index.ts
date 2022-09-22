@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { validateId, IPerson } from "../person/person.interface";
+import { validateId, IPerson } from "../util/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";

@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { idPattern } from "../util/joi";
+import { idPattern } from "./joi";
 
 type IGroup = {
   name: string;

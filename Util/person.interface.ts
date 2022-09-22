@@ -1,6 +1,6 @@
 import Joi from "joi";
-import { validationError } from "../util/custom.error";
-import { idPattern } from "../util/joi";
+import { validationError } from "./custom.error";
+import { idPattern } from "./joi";
 
 interface IPerson {
   name: string;
