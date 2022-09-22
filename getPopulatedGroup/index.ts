@@ -8,7 +8,7 @@ import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import { validateId } from "../util/joi";
 
-const GroupDetails: AzureFunction = async function (
+const getPopulatedGroup: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   user: IPerson
@@ -18,7 +18,7 @@ const GroupDetails: AzureFunction = async function (
     validateId(id);
 
     await mongooseConnection();
-    const group = await Group.findById(id).populate("people");
+    const group = await Group.findById(id).populate("people").populate("group");
 
     if (user.role === "USER") {
       const userGroups = await Group.find({ people: user.id });
@@ -36,4 +36,4 @@ const GroupDetails: AzureFunction = async function (
   }
 };
 
-export default authWrapper(GroupDetails, userPerm);
+export default authWrapper(getPopulatedGroup, userPerm);

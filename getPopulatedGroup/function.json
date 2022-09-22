@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/groupDetails/index.js"
+  "scriptFile": "../dist/getPopulatedGroup/index.js"
 }
