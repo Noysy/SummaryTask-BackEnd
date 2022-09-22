@@ -24,7 +24,7 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
 
-    const person = await Person.findByIdAndUpdate(id, req.body, { new: true });
+    const person = await Person.findByIdAndUpdate(id, req.body, { new: true }).exec();
     if (!person) throw new notFoundError("person");
 
     context.res = {
