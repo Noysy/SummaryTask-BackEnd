@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (
   try {
     const { id, parentId } = context.bindingData;
     validateId(id);
-    validateId({ id: parentId });
+    validateId(parentId);
 
     await mongooseConnection();
     const group = await Group.findOne({ _id: id });

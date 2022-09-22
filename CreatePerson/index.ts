@@ -3,13 +3,13 @@ import Group from "../util/group.model";
 import {
   DBPerson,
   IPerson,
-  Person,
   personRequirements,
 } from "../person/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
+import Person from "../util/person.model";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,

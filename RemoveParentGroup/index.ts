@@ -16,7 +16,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const { id } = context.bindingData;
-    validateId({ id: id });
+    validateId(id);
 
     await mongooseConnection();
     if ((await Group.findOne({ _id: id })) === null)

@@ -1,10 +1,11 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import Group from "../util/group.model";
-import { DBPerson, Person, validateId } from "../person/person.interface";
+import { DBPerson, validateId } from "../person/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
+import Person from "../util/person.model";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -14,7 +15,7 @@ const httpTrigger: AzureFunction = async function (
   try {
     const { id, personId } = context.bindingData;
     validateId(id);
-    validateId({ id: personId });
+    validateId(personId);
 
     await mongooseConnection();
     if ((await Group.findOne({ _id: id })) === null) throw new notFoundError("group");
