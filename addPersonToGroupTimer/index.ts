@@ -3,7 +3,7 @@ import { QueueServiceClient } from "@azure/storage-queue";
 import Group from "../util/group.model";
 import errorHandler from "../util/error.handling";
 
-const timerTrigger: AzureFunction = async function (
+const AddPersonToGroupTimer: AzureFunction = async function (
   context: Context,
   _myTimer: any
 ): Promise<void> {
@@ -47,4 +47,4 @@ const timerTrigger: AzureFunction = async function (
   }
 };
 
-export default timerTrigger;
+export default AddPersonToGroupTimer;

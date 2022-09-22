@@ -7,7 +7,7 @@ import Group from "../util/group.model";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
 
-const httpTrigger: AzureFunction = async function (
+const DeletePerson: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   _user: IPerson
@@ -30,4 +30,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, adminPerm);
+export default authWrapper(DeletePerson, adminPerm);

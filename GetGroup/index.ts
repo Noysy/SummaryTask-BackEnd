@@ -6,7 +6,7 @@ import { noPermissionError, notFoundError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 
-const httpTrigger: AzureFunction = async function (
+const GetGroup: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   user: IPerson
@@ -29,4 +29,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, userPerm);
+export default authWrapper(GetGroup, userPerm);

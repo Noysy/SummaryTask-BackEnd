@@ -18,7 +18,7 @@ import {
 import { authWrapper, userPerm } from "../util/authorization";
 import Person from "../util/person.model";
 
-const httpTrigger: AzureFunction = async function (
+const AddFileToPerson: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
   _user: IPerson
@@ -91,4 +91,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, userPerm);
+export default authWrapper(AddFileToPerson, userPerm);

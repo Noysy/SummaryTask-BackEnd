@@ -10,7 +10,7 @@ import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
 
-const httpTrigger: AzureFunction = async function (
+const EditPerson: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
   _user: IPerson
@@ -35,4 +35,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, adminPerm);
+export default authWrapper(EditPerson, adminPerm);

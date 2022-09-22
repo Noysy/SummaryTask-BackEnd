@@ -4,7 +4,7 @@ import { noPermissionError } from "../util/custom.error";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
 
-const httpTrigger: AzureFunction = async function (
+const SelectUser: AzureFunction = async function (
   context: Context,
   _req: HttpRequest
 ): Promise<void> {
@@ -27,4 +27,4 @@ const httpTrigger: AzureFunction = async function (
   };
 };
 
-export default httpTrigger;
+export default SelectUser;

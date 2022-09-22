@@ -6,7 +6,7 @@ import errorHandler from "../util/error.handling";
 import Group from "../util/group.model";
 import mongooseConnection from "../util/mongoose.connection";
 
-const httpTrigger: AzureFunction = async function (
+const GetGroupsChildren: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   user: IPerson
@@ -50,4 +50,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, userPerm);
+export default authWrapper(GetGroupsChildren, userPerm);

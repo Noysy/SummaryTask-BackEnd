@@ -6,7 +6,7 @@ import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 
-const httpTrigger: AzureFunction = async function (
+const RemoveParentGroup: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   _user: IPerson
@@ -36,4 +36,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, adminPerm);
+export default authWrapper(RemoveParentGroup, adminPerm);

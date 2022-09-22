@@ -6,7 +6,7 @@ import Group from '../util/group.model';
 import mongooseConnection from '../util/mongoose.connection';
 import Person from '../util/person.model';
 
-const httpTrigger: AzureFunction = async function (
+const GetPeople: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   user: IPerson,
@@ -46,4 +46,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, userPerm);
+export default authWrapper(GetPeople, userPerm);

@@ -7,7 +7,7 @@ import Group from "../util/group.model";
 import { nameLength } from "../util/joi";
 import mongooseConnection from "../util/mongoose.connection";
 
-const httpTrigger: AzureFunction = async function (
+const ChangeGroupName: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
   _user: IPerson
@@ -33,4 +33,4 @@ const httpTrigger: AzureFunction = async function (
   }
 };
 
-export default authWrapper(httpTrigger, adminPerm);
+export default authWrapper(ChangeGroupName, adminPerm);
