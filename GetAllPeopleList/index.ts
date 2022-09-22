@@ -1,7 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Person, IPerson } from "../Person/person.interface";
-import errorHandler from "../Util/error.handling";
-import mongooseConnection from "../Util/mongoose.connection";
+import { Person, IPerson } from "../person/person.interface";
+import errorHandler from "../util/error.handling";
+import mongooseConnection from "../util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,

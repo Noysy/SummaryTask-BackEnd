@@ -1,6 +1,7 @@
 import Joi from "joi";
 import mongoose from "mongoose";
-import { validationError } from "../Util/custom.error";
+import { validationError } from "../util/custom.error";
+import { idPattern } from "../util/joi";
 
 const person = new mongoose.Schema(
   {
@@ -41,12 +42,6 @@ interface FileDetails {
   url: string;
 }
 
-const idPattern = Joi.object().keys({
-  id: Joi.string()
-    .pattern(/^[0-9a-f]{24}$/)
-    .required(),
-});
-
 const validateId = (id: { id: string }) => {
   const validation = idPattern.validate(id);
   if (validation.error) throw new validationError(validation.error.message);
@@ -58,9 +53,7 @@ const personRequirements = Joi.object().keys({
   favoriteAnimal: Joi.string().required().max(15),
   favoriteFood: Joi.string().required().max(15),
   role: Joi.string().required().max(15),
-  group: Joi.string()
-    .pattern(/^[0-9a-f]{24}$/)
-    .allow(null, ""),
+  group: idPattern.allow(null, ""),
   files: Joi.array().items(Joi.string()),
 });
 

@@ -1,9 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { Group } from '../Group/group.interface';
-import { Person, DBPerson } from '../Person/person.interface';
-import { authWrapper, userPerm } from '../Util/authorization';
-import errorHandler from '../Util/error.handling';
-import mongooseConnection from '../Util/mongoose.connection';
+import { Group } from '../group/group.interface';
+import { Person, DBPerson } from '../person/person.interface';
+import { authWrapper, userPerm } from '../util/authorization';
+import errorHandler from '../util/error.handling';
+import mongooseConnection from '../util/mongoose.connection';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,

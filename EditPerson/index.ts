@@ -5,11 +5,11 @@ import {
   Person,
   updatePersonDetails,
   DBPerson,
-} from "../Person/person.interface";
-import { adminPerm, authWrapper } from "../Util/authorization";
-import { validationError } from "../Util/custom.error";
-import errorHandler from "../Util/error.handling";
-import mongooseConnection from "../Util/mongoose.connection";
+} from "../person/person.interface";
+import { adminPerm, authWrapper } from "../util/authorization";
+import { validationError } from "../util/custom.error";
+import errorHandler from "../util/error.handling";
+import mongooseConnection from "../util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const { id } = context.bindingData;
-    validateId({ id });
+    validateId(id);
 
     const changes: IPerson = {
       name: req.body?.name,

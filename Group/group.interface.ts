@@ -1,5 +1,6 @@
 import Joi from "joi";
 import mongoose from "mongoose";
+import { idPattern } from "../util/joi";
 
 const group = new mongoose.Schema(
   {
@@ -25,22 +26,12 @@ type IGroup = {
 };
 
 const groupRequirements = Joi.object().keys({
-  id: Joi.string().pattern(/^[0-9a-f]{24}$/),
+  id: idPattern,
   name: Joi.string().required().max(10),
-  people: Joi.array().items(Joi.string()),
-  parentGroup: Joi.string(),
-});
-
-const nameLength = Joi.object().keys({
-  name: Joi.string().required().max(10),
-});
-
-const idPattern = Joi.object().keys({
-  id: Joi.string()
-    .pattern(/^[0-9a-f]{24}$/)
-    .required(),
+  people: Joi.array().items(idPattern),
+  parentGroup: idPattern,
 });
 
 const Group = mongoose.model("group", group);
 
-export { Group, groupRequirements, IGroup, idPattern, nameLength };
+export { Group, groupRequirements, IGroup };

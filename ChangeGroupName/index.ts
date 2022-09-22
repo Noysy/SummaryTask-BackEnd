@@ -1,11 +1,11 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { Group, nameLength } from "../Group/group.interface";
-
-import { DBPerson, validateId } from "../Person/person.interface";
-import { adminPerm, authWrapper } from "../Util/authorization";
-import { notFoundError, validationError } from "../Util/custom.error";
-import errorHandler from "../Util/error.handling";
-import mongooseConnection from "../Util/mongoose.connection";
+import { Group } from "../group/group.interface";
+import { DBPerson, validateId } from "../person/person.interface";
+import { adminPerm, authWrapper } from "../util/authorization";
+import { notFoundError, validationError } from "../util/custom.error";
+import errorHandler from "../util/error.handling";
+import { nameLength } from "../util/joi";
+import mongooseConnection from "../util/mongoose.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -14,7 +14,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const { id } = context.bindingData;
-    validateId({ id });
+    validateId(id);
 
     const name = req.body?.name;
 
@@ -23,8 +23,7 @@ const httpTrigger: AzureFunction = async function (
 
     await mongooseConnection();
     const group = await Group.findByIdAndUpdate(id, { name }, { new: true });
-    if (group === null)
-    throw new notFoundError("group");
+    if (group === null) throw new notFoundError("group");
 
     context.res = {
       status: 200,
