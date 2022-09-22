@@ -22,7 +22,7 @@ interface FileDetails {
 }
 
 const validateId = (id: string) => {
-  const validation = idPattern.validate(id);
+  const validation = idPattern.required().validate(id);
   if (validation.error) throw new validationError(validation.error.message);
 };
 

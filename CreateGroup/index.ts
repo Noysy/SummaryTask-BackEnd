@@ -13,19 +13,14 @@ const httpTrigger: AzureFunction = async function (
   _user: DBPerson
 ): Promise<void> {
   try {
-    const group: IGroup = {
-      name: req.body?.name,
-      people: req.body?.people,
-      parentGroup: req.body?.parentGroup,
-    };
-    const validation = groupRequirements.validate(group);
+    const validation = groupRequirements.validate(req.body);
     if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
 
     context.res = {
       status: 201,
-      body: await Group.create(group),
+      body: await Group.create(req.body),
     };
   } catch (err) {
     errorHandler(context, err);
