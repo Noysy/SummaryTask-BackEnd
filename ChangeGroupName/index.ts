@@ -1,10 +1,10 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { IPerson, validateId } from "../util/person.interface";
+import { IPerson } from "../util/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import Group from "../util/group.model";
-import { nameLength } from "../util/joi";
+import { nameLength, validateId } from "../util/joi";
 import mongooseConnection from "../util/mongoose.connection";
 
 const ChangeGroupName: AzureFunction = async function (

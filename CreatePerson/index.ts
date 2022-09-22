@@ -1,14 +1,14 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import Group from "../util/group.model";
 import {
-  IPerson,
-  personRequirements,
+  IPerson
 } from "../util/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
+import { personRequirements } from "../util/joi";
 
 const CreatePerson: AzureFunction = async function (
   context: Context,

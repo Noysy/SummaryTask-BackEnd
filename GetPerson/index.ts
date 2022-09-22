@@ -1,10 +1,11 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { IPerson, validateId } from "../util/person.interface";
+import { IPerson } from "../util/person.interface";
 import { authWrapper, userPerm } from "../util/authorization";
 import { noPermissionError, notFoundError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
+import { validateId } from "../util/joi";
 
 const GetPerson: AzureFunction = async function (
   context: Context,

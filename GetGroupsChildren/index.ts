@@ -1,10 +1,11 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { IPerson, validateId } from "../util/person.interface";
+import { IPerson } from "../util/person.interface";
 import { authWrapper, userPerm } from "../util/authorization";
 import { noPermissionError, notFoundError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import Group from "../util/group.model";
 import mongooseConnection from "../util/mongoose.connection";
+import { validateId } from "../util/joi";
 
 const GetGroupsChildren: AzureFunction = async function (
   context: Context,

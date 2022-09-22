@@ -1,11 +1,12 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { validateId, IPerson } from "../util/person.interface";
+import {  IPerson } from "../util/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import Group from "../util/group.model";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
+import { validateId } from "../util/joi";
 
 const DeletePerson: AzureFunction = async function (
   context: Context,
