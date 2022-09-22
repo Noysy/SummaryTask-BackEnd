@@ -8,7 +8,7 @@ import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import { validateId } from "../util/joi";
 
-const getPopulatedGroup: AzureFunction = async function (
+const GetPopulatedGroup: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
   user: IPerson
@@ -36,4 +36,4 @@ const getPopulatedGroup: AzureFunction = async function (
   }
 };
 
-export default authWrapper(getPopulatedGroup, userPerm);
+export default authWrapper(GetPopulatedGroup, userPerm);

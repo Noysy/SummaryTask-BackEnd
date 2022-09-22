@@ -14,5 +14,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/addFileToPerson/index.js"
+  "scriptFile": "../dist/AddFileToPerson/index.js"
 }

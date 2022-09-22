@@ -7,5 +7,5 @@
       "schedule": "0 */1 * * * *"
     }
   ],
-  "scriptFile": "../dist/addPersonToGroupTimer/index.js"
+  "scriptFile": "../dist/AddPersonToGroupTimer/index.js"
 }
