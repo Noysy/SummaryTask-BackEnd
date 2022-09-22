@@ -6,12 +6,13 @@ import {
   SASProtocol,
   StorageSharedKeyCredential,
 } from "@azure/storage-blob";
-import { DBPerson, Person } from "../person/person.interface";
+import { DBPerson } from "../person/person.interface";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import multipart from "parse-multipart";
 import { CustomError, notFoundError, validationError } from "../util/custom.error";
 import { authWrapper, userPerm } from "../util/authorization";
+import Person from "../util/person.model";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
