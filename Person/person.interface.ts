@@ -2,22 +2,25 @@ import Joi from "joi";
 import mongoose from "mongoose";
 import { validationError } from "../Util/custom.error";
 
-const person = new mongoose.Schema({
-  name: { type: String, required: true },
-  favoriteColor: { type: String, required: true },
-  favoriteAnimal: { type: String, required: true },
-  favoriteFood: { type: String, required: true },
-  role: { type: String, required: true },
-  files: [{ name: String, url: String }],
-});
-
-person.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: function (_doc, ret) {
-    delete ret._id;
+const person = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    favoriteColor: { type: String, required: true },
+    favoriteAnimal: { type: String, required: true },
+    favoriteFood: { type: String, required: true },
+    role: { type: String, required: true },
+    files: [{ name: String, url: String }],
   },
-});
+  {
+    toJSON: {
+      virtuals: true,
+      versionKey: false,
+      transform: function (_doc, ret) {
+        delete ret._id;
+      },
+    },
+  }
+);
 
 interface IPerson {
   name: string;

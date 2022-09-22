@@ -1,19 +1,22 @@
 import Joi from "joi";
 import mongoose from "mongoose";
 
-const group = new mongoose.Schema({
-  name: String,
-  people: { type: [mongoose.Schema.Types.ObjectId], ref: "person" },
-  parentGroup: { type: mongoose.Schema.Types.ObjectId, ref: "group" },
-});
-
-group.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: function (_doc, ret) {
-    delete ret._id;
+const group = new mongoose.Schema(
+  {
+    name: String,
+    people: { type: [mongoose.Schema.Types.ObjectId], ref: "person" },
+    parentGroup: { type: mongoose.Schema.Types.ObjectId, ref: "group" },
   },
-});
+  {
+    toJSON: {
+      virtuals: true,
+      versionKey: false,
+      transform: function (_doc, ret) {
+        delete ret._id;
+      },
+    },
+  }
+);
 
 type IGroup = {
   name: string;
@@ -29,8 +32,8 @@ const groupRequirements = Joi.object().keys({
 });
 
 const nameLength = Joi.object().keys({
-    name: Joi.string().required().max(10),
-  });
+  name: Joi.string().required().max(10),
+});
 
 const idPattern = Joi.object().keys({
   id: Joi.string()
