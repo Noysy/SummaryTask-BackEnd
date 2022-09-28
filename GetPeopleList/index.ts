@@ -11,7 +11,7 @@ const GetPeopleList: AzureFunction = async function (
     await mongooseConnection();
 
     context.res = {
-      body: await Person.find({}),
+      body: await Person.find({}).exec(),
     };
   } catch (err) {
     errorHandler(context, err);

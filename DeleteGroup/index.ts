@@ -17,11 +17,14 @@ const DeleteGroup: AzureFunction = async function (
     validateId(id);
     await mongooseConnection();
 
-    const deletedGroup = await Group.findByIdAndDelete(id);
+    const deletedGroup = await Group.findByIdAndDelete(id).exec();
 
     if (deletedGroup === null) throw new notFoundError("group");
 
-    await Group.updateMany({ parentGroup: id }, { $unset: { parentGroup: 1 } });
+    await Group.updateMany(
+      { parentGroup: id },
+      { $unset: { parentGroup: 1 } }
+    ).exec();
 
     context.res = {
       body: deletedGroup,

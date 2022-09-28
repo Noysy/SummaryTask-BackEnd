@@ -19,10 +19,9 @@ const RemovePersonFromGroup: AzureFunction = async function (
 
     await mongooseConnection();
 
-    if ((await Group.findOne({ _id: id })) === null)
-      throw new notFoundError("group");
+    if (!(await Group.findById(id).exec())) throw new notFoundError("group");
 
-    if ((await Group.findOne({ people: personId, _id: id })) === null)
+    if ((await Group.findOne({ people: personId, _id: id }).exec()) === null)
       throw new notFoundError("person");
 
     context.res = {
@@ -30,7 +29,7 @@ const RemovePersonFromGroup: AzureFunction = async function (
         id,
         { $pull: { people: personId } },
         { new: true }
-      ),
+      ).exec(),
     };
   } catch (err) {
     errorHandler(context, err);

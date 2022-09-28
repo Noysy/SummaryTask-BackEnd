@@ -38,7 +38,7 @@ const AddPersonToGroupTimer: AzureFunction = async function (
           encryptedMessage.group,
           { $push: { people: encryptedMessage.person } },
           { new: true }
-        );
+        ).exec();
         await queueClient.deleteMessage(message.messageId, message.popReceipt);
       });
     }

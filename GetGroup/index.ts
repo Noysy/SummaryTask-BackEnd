@@ -16,7 +16,7 @@ const GetGroup: AzureFunction = async function (
     const { id } = context.bindingData;
     validateId(id);
 
-    const group = await Group.findById(id);
+    const group = await Group.findById(id).exec();
 
     if (!group) throw new notFoundError("group");
     if (!group.people.includes(user.id)) throw new noPermissionError();

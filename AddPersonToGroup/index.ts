@@ -19,10 +19,10 @@ const AddPersonToGroup: AzureFunction = async function (
     validateId(personId);
 
     await mongooseConnection();
-    if (!(await Group.findById(id))) throw new notFoundError("group");
-    if (!(await Person.findById(personId))) throw new notFoundError("person");
+    if (!(await Group.findById(id).exec())) throw new notFoundError("group");
+    if (!(await Person.findById(personId).exec())) throw new notFoundError("person");
 
-    if ((await Group.findOne({ people: personId, _id: id })) !== null)
+    if ((await Group.findOne({ people: personId, _id: id }).exec()) !== null)
       throw new validationError("This person is already in the group");
 
     context.res = {
@@ -30,7 +30,7 @@ const AddPersonToGroup: AzureFunction = async function (
         id,
         { $push: { people: personId } },
         { new: true }
-      ),
+      ).exec(),
     };
   } catch (err) {
     errorHandler(context, err);

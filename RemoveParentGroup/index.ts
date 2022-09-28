@@ -17,10 +17,10 @@ const RemoveParentGroup: AzureFunction = async function (
     validateId(id);
 
     await mongooseConnection();
-    if (!(await Group.findById(id))) throw new notFoundError("group");
+    if (!(await Group.findById(id).exec())) throw new notFoundError("group");
 
     if (
-      (await Group.findOne({ _id: id, parentGroup: { $exists: true } })) ===
+      (await Group.findOne({ _id: id, parentGroup: { $exists: true } }).exec()) ===
       null
     )
       throw new validationError("This group does not have a parent");
@@ -30,7 +30,7 @@ const RemoveParentGroup: AzureFunction = async function (
         id,
         { $unset: { parentGroup: 1 } },
         { new: true }
-      ),
+      ).exec(),
     };
   } catch (err) {
     errorHandler(context, err);

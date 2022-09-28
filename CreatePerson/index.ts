@@ -1,8 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import Group from "../util/group.model";
-import {
-  IPerson
-} from "../util/person.interface";
+import { IPerson } from "../util/person.interface";
 import { adminPerm, authWrapper } from "../util/authorization";
 import { notFoundError, validationError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
@@ -23,7 +21,7 @@ const CreatePerson: AzureFunction = async function (
 
     await mongooseConnection();
     if (groupId)
-      if ((await Group.findOne({ _id: groupId })) === null)
+      if (!(await Group.findById({ _id: groupId }).exec()))
         throw new notFoundError("group");
 
     const { group, ...personToCreate } = req.body;

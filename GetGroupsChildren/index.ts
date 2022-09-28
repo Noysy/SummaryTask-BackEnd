@@ -17,7 +17,7 @@ const GetGroupsChildren: AzureFunction = async function (
     validateId(id);
     await mongooseConnection();
 
-    const group = await Group.findById(id);
+    const group = await Group.findById(id).exec();
 
     if (!group) throw new notFoundError("group");
 
@@ -25,7 +25,7 @@ const GetGroupsChildren: AzureFunction = async function (
       throw new noPermissionError();
 
     const getGroupsChildren = async (groupId: string) => {
-      const children = await Group.find({ parentGroup: groupId });
+      const children = await Group.find({ parentGroup: groupId }).exec();
 
       if (children)
         return Promise.all(

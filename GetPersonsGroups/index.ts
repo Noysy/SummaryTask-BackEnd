@@ -19,7 +19,7 @@ const GetPersonsGroups: AzureFunction = async function (
 
     await mongooseConnection();
     context.res = {
-      body: await Group.find({ people: id }),
+      body: await Group.find({ people: id }).exec(),
     };
   } catch (err) {
     errorHandler(context, err);

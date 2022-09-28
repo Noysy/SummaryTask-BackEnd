@@ -18,7 +18,7 @@ const GetPerson: AzureFunction = async function (
     if (!id === id && user.role === "USER") throw new noPermissionError();
 
     await mongooseConnection();
-    const person = await Person.findOne({ _id: id });
+    const person = await Person.findById(id).exec();
     if (person === null) throw new notFoundError("person");
 
     context.res = {

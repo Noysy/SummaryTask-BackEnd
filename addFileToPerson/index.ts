@@ -26,7 +26,7 @@ const AddFileToPerson: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     await mongooseConnection();
-    if (!(await Person.findById(id))) throw new notFoundError("person");
+    if (!(await Person.findById(id).exec())) throw new notFoundError("person");
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);
@@ -35,7 +35,7 @@ const AddFileToPerson: AzureFunction = async function (
       await Person.findById({
         id,
         files: { $elemMatch: { name: `${id}-${data.filename}` } },
-      })
+      }).exec()
     )
       throw new validationError("You can't upload the same image! smh");
 
@@ -81,7 +81,7 @@ const AddFileToPerson: AzureFunction = async function (
     const SASUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${blobName}?${SASToken}`;
     await Person.findByIdAndUpdate(id, {
       $push: { files: { name: `${id}-${data.filename}`, url: SASUrl } },
-    });
+    }).exec();
 
     context.res = {
       body: { name: data.filename, url: SASUrl },

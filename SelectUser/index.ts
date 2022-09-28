@@ -9,7 +9,7 @@ const SelectUser: AzureFunction = async function (
   _req: HttpRequest
 ): Promise<void> {
   await mongooseConnection();
-  const person = await Person.findOne({ _id: context.bindingData.personId });
+  const person = await Person.findById(context.bindingData.personId).exec();
 
   if (person === null) throw new noPermissionError();
   const accessToken = jwt.sign(

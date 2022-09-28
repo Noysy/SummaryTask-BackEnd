@@ -21,7 +21,7 @@ const GetPeople: AzureFunction = async function (
       const groupsOfPerson = await Group.find(
         { people: id },
         { _id: 0, people: 1 },
-      ).populate('people');
+      ).populate('people').exec();
       groupsOfPerson.forEach((group) => {
         group.people.forEach((person) => {
           if (!people.includes(person)) {
@@ -30,7 +30,7 @@ const GetPeople: AzureFunction = async function (
         });
       });
 
-      if (people.length === 0) people.push(await Person.findById(id));
+      if (people.length === 0) people.push(await Person.findById(id).exec());
 
       context.res = {
         body: people,
@@ -38,7 +38,7 @@ const GetPeople: AzureFunction = async function (
     } else if (user.role === 'ADMIN') {
       await mongooseConnection();
       context.res = {
-        body: await Person.find({}),
+        body: await Person.find({}).exec(),
       };
     }
   } catch (err) {

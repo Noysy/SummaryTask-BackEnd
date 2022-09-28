@@ -18,14 +18,14 @@ const AddParentGroup: AzureFunction = async function (
     validateId(parentId);
 
     await mongooseConnection();
-    const group = await Group.findById(id);
+    const group = await Group.findById(id).exec();
 
     if (!group) throw new notFoundError("group");
 
     if (id === parentId)
       throw new validationError("A group can't be its own parent.");
 
-    if (!(await Group.findById(parentId))) throw new notFoundError("group");
+    if (!(await Group.findById(parentId).exec())) throw new notFoundError("group");
 
     if (group.parentGroup) {
       throw new validationError("The group already has a parent");
@@ -37,7 +37,7 @@ const AddParentGroup: AzureFunction = async function (
     ): Promise<boolean> => {
       if (groupId === parentGroup) return true;
 
-      const parent = await Group.findById(parentGroup);
+      const parent = await Group.findById(parentGroup).exec();
 
       if (parent && parent.parentGroup)
         return hasPrecedingParent(groupId, String(parent?.parentGroup));

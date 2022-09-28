@@ -22,7 +22,7 @@ const ChangeGroupName: AzureFunction = async function (
     if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
-    const group = await Group.findByIdAndUpdate(id, { name }, { new: true });
+    const group = await Group.findByIdAndUpdate(id, { name }, { new: true }).exec();
     if (!group) throw new notFoundError("group");
 
     context.res = {
