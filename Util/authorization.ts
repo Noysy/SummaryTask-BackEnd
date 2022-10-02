@@ -39,8 +39,8 @@ export const authWrapper = (
   ): Promise<HttpTriggerResult> => {
     try {
       const header = req.headers?.authorization;
-      if (header && header.split(" ")[1]) {
-        const user = jwtDecode(header.split(" ")[1]);
+      if (header) {
+        const user = jwtDecode(header);
         if (user) {
           permissionType(user.role);
           return func(context, req, user);
@@ -50,7 +50,6 @@ export const authWrapper = (
       context.res = {
         status: 401,
       };
-
     } catch (err) {
       errorHandler(context, err);
     }

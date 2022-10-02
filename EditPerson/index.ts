@@ -15,7 +15,7 @@ const EditPerson: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     validateId(id);
-
+    
     const validation = updatePersonDetails.validate(req.body);
     if (validation.error) throw new validationError(validation.error.message);
 

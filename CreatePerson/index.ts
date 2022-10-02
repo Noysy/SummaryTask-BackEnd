@@ -16,7 +16,7 @@ const CreatePerson: AzureFunction = async function (
   try {
     const { group: groupId } = req.body;
 
-    const validation = personRequirements.validate(req.body);
+    const validation = personRequirements.validate(req.body.person);
     if (validation.error) throw new validationError(validation.error.message);
 
     await mongooseConnection();
@@ -24,7 +24,7 @@ const CreatePerson: AzureFunction = async function (
       if (!(await Group.findById({ _id: groupId }).exec()))
         throw new notFoundError("group");
 
-    const { group, ...personToCreate } = req.body;
+    const { group, ...personToCreate } = req.body.person;
 
     const newPerson = await Person.create(personToCreate);
 
