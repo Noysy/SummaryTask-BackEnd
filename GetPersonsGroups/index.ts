@@ -15,7 +15,8 @@ const GetPersonsGroups: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     validateId(id);
-    if (!id === id && user.role === "USER") throw new noPermissionError();
+    if (!(id === user.id) && user.role === "USER")
+      throw new noPermissionError();
 
     await mongooseConnection();
     context.res = {
