@@ -27,17 +27,14 @@ const AddFileToPerson: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     await mongooseConnection();
-    if (!(await Person.findById(id).exec())) throw new notFoundError("person");
+    const person = await Person.findById(id).exec();
+    if (!person) throw new notFoundError("person");
 
     const bodyBuffer = Buffer.from(req.body);
     const boundary = multipart.getBoundary(req.headers["content-type"]);
     const data = multipart.Parse(bodyBuffer, boundary)[0];
-    if (
-      await Person.findById({
-        id,
-        files: { $elemMatch: { name: `${id}-${data.filename}` } },
-      }).exec()
-    )
+
+    if (person.files.some((file) => file.name === `${id}-${data.filename}`))
       throw new validationError("You can't upload the same image! smh");
 
     const blobServiceClient = BlobServiceClient.fromConnectionString(
@@ -77,9 +74,12 @@ const AddFileToPerson: AzureFunction = async function (
       new StorageSharedKeyCredential(storageAccount, configFile.accountKey)
     ).toString();
     const SASUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${blobName}?${SASToken}`;
-    await Person.findByIdAndUpdate(id, {
-      $push: { files: { name: `${id}-${data.filename}`, url: SASUrl } },
-    }).exec();
+
+    await person
+      .updateOne({
+        $push: { files: { name: `${id}-${data.filename}`, url: SASUrl } },
+      })
+      .exec();
 
     context.res = {
       body: { name: data.filename, url: SASUrl },
