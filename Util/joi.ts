@@ -5,7 +5,7 @@ const idPattern = Joi.string().hex().length(24);
 
 const nameLength = Joi.string().required().max(10);
 
-const groupRequirements = Joi.object().keys({
+const groupRequirements = Joi.object({
   id: idPattern,
   name: Joi.string().required().max(10),
   people: Joi.array().items(idPattern),
@@ -17,7 +17,7 @@ const validateId = (id: string) => {
   if (validation.error) throw new validationError(validation.error.message);
 };
 
-const personRequirements = Joi.object().keys({
+const personRequirements = Joi.object({
   name: Joi.string().required().max(10),
   favoriteColor: Joi.string().required().max(15),
   favoriteAnimal: Joi.string().required().max(15),
@@ -27,7 +27,7 @@ const personRequirements = Joi.object().keys({
   files: Joi.array().items(Joi.string()),
 });
 
-const updatePersonDetails = Joi.object().keys({
+const updatePersonDetails = Joi.object({
   name: Joi.string().max(10),
   favoriteColor: Joi.string().max(15),
   favoriteAnimal: Joi.string().max(15),
