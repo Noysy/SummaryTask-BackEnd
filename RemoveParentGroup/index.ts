@@ -20,8 +20,7 @@ const RemoveParentGroup: AzureFunction = async function (
     if (!(await Group.findById(id).exec())) throw new notFoundError("group");
 
     if (
-      (await Group.findOne({ _id: id, parentGroup: { $exists: true } }).exec()) ===
-      null
+      !(await Group.findOne({ _id: id, parentGroup: { $exists: true } }).exec())
     )
       throw new validationError("This group does not have a parent");
 

@@ -19,7 +19,7 @@ const DeletePerson: AzureFunction = async function (
 
     await mongooseConnection();
     const person = await Person.findByIdAndDelete(id).exec();
-    if (person === null) throw new notFoundError("person");
+    if (!person) throw new notFoundError("person");
 
     await Group.updateMany({ people: id }, { $pull: { people: id } }).exec();
 

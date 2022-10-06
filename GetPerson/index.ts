@@ -19,7 +19,7 @@ const GetPerson: AzureFunction = async function (
 
     await mongooseConnection();
     const person = await Person.findById(id).exec();
-    if (person === null) throw new notFoundError("person");
+    if (!person) throw new notFoundError("person");
 
     context.res = {
       body: person,

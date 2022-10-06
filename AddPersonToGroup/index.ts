@@ -20,9 +20,10 @@ const AddPersonToGroup: AzureFunction = async function (
 
     await mongooseConnection();
     if (!(await Group.findById(id).exec())) throw new notFoundError("group");
-    if (!(await Person.findById(personId).exec())) throw new notFoundError("person");
+    if (!(await Person.findById(personId).exec()))
+      throw new notFoundError("person");
 
-    if ((await Group.findOne({ people: personId, _id: id }).exec()) !== null)
+    if (await Group.findOne({ people: personId, _id: id }).exec())
       throw new validationError("This person is already in the group");
 
     context.res = {

@@ -11,7 +11,7 @@ const SelectUser: AzureFunction = async function (
   await mongooseConnection();
   const person = await Person.findById(context.bindingData.personId).exec();
 
-  if (person === null) throw new noPermissionError();
+  if (!person) throw new noPermissionError();
   const accessToken = jwt.sign(
     {
       name: person.name,

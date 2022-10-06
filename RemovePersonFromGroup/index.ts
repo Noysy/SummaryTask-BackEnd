@@ -21,7 +21,7 @@ const RemovePersonFromGroup: AzureFunction = async function (
 
     if (!(await Group.findById(id).exec())) throw new notFoundError("group");
 
-    if ((await Group.findOne({ people: personId, _id: id }).exec()) === null)
+    if (!(await Group.findOne({ people: personId, _id: id }).exec()))
       throw new notFoundError("person");
 
     context.res = {

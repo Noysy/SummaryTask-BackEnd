@@ -19,7 +19,7 @@ const DeleteGroup: AzureFunction = async function (
 
     const deletedGroup = await Group.findByIdAndDelete(id).exec();
 
-    if (deletedGroup === null) throw new notFoundError("group");
+    if (!deletedGroup) throw new notFoundError("group");
 
     await Group.updateMany(
       { parentGroup: id },
