@@ -6,7 +6,7 @@
         "direction": "in",
         "name": "req",
         "methods": ["get"],
-        "route": "person/{personId}/select"
+        "route": "person/{personId}/login"
       },
       {
         "type": "http",
@@ -14,6 +14,6 @@
         "name": "res"
       }
     ],
-    "scriptFile": "../dist/SelectUser/index.js"
+    "scriptFile": "../dist/Login/index.js"
   }
   

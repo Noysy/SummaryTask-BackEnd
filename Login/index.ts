@@ -4,7 +4,7 @@ import { notFoundError } from "../util/custom.error";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
 
-const SelectUser: AzureFunction = async function (
+const Login: AzureFunction = async function (
   context: Context,
   _req: HttpRequest
 ): Promise<void> {
@@ -27,4 +27,4 @@ const SelectUser: AzureFunction = async function (
   };
 };
 
-export default SelectUser;
+export default Login;
