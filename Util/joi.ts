@@ -3,9 +3,7 @@ import { validationError } from "./custom.error";
 
 const idPattern = Joi.string().hex().length(24);
 
-const nameLength = Joi.object().keys({
-  name: Joi.string().required().max(10),
-});
+const nameLength = Joi.string().required().max(10);
 
 const groupRequirements = Joi.object().keys({
   id: idPattern,
