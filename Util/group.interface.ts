@@ -4,4 +4,4 @@ type IGroup = {
   parentGroup?: string;
 };
 
-export { IGroup };
+export default IGroup;

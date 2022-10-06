@@ -14,4 +14,4 @@ interface FileDetails {
   url: string;
 }
 
-export { IPerson };
+export default IPerson ;
