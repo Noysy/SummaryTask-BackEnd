@@ -19,17 +19,17 @@ const RemoveParentGroup: AzureFunction = async function (
     await mongooseConnection();
     if (!(await Group.findById(id).exec())) throw new notFoundError("group");
 
-    if (
-      !(await Group.findOne({ _id: id, parentGroup: { $exists: true } }).exec())
-    )
-      throw new validationError("This group does not have a parent");
+    const group = await Group.findOne({
+      _id: id,
+      parentGroup: { $exists: true },
+    }).exec();
 
+    if (!group) throw new validationError("This group does not have a parent");
+
+    await group.update({ $unset: { parentGroup: 1 } }, { new: true }).exec();
+    await group.save();
     context.res = {
-      body: await Group.findByIdAndUpdate(
-        id,
-        { $unset: { parentGroup: 1 } },
-        { new: true }
-      ).exec(),
+      body: group,
     };
   } catch (err) {
     errorHandler(context, err);
