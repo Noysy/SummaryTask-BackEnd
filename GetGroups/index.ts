@@ -11,7 +11,7 @@ const GetGroups: AzureFunction = async function (
   user: IPerson
 ): Promise<void> {
   try {
-    const id = user.id;
+    const { id } = user;
     await mongooseConnection();
     context.res = {
       body: await Group.find(

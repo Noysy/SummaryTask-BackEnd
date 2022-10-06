@@ -1,27 +1,29 @@
-import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { IPerson } from '../util/person.interface';
-import { authWrapper, userPerm } from '../util/authorization';
-import errorHandler from '../util/error.handling';
-import Group from '../util/group.model';
-import mongooseConnection from '../util/mongoose.connection';
-import Person from '../util/person.model';
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { IPerson } from "../util/person.interface";
+import { authWrapper, userPerm } from "../util/authorization";
+import errorHandler from "../util/error.handling";
+import Group from "../util/group.model";
+import mongooseConnection from "../util/mongoose.connection";
+import Person from "../util/person.model";
 
 const GetPeople: AzureFunction = async function (
   context: Context,
   _req: HttpRequest,
-  user: IPerson,
+  user: IPerson
 ): Promise<void> {
   try {
     if (!user) return null;
-    else if (user.role === 'USER') {
+    else if (user.role === "USER") {
       await mongooseConnection();
-      const id = user.id;
+      const { id } = user;
 
       const people = [];
       const groupsOfPerson = await Group.find(
         { people: id },
-        { _id: 0, people: 1 },
-      ).populate('people').exec();
+        { _id: 0, people: 1 }
+      )
+        .populate("people")
+        .exec();
       groupsOfPerson.forEach((group) => {
         group.people.forEach((person) => {
           if (!people.includes(person)) {
@@ -35,10 +37,10 @@ const GetPeople: AzureFunction = async function (
       context.res = {
         body: people,
       };
-    } else if (user.role === 'ADMIN') {
+    } else if (user.role === "ADMIN") {
       await mongooseConnection();
       context.res = {
-        body: await Person.find({}).exec(),
+        body: await Person.find().exec(),
       };
     }
   } catch (err) {
