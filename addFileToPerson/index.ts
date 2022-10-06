@@ -17,6 +17,7 @@ import {
 } from "../util/custom.error";
 import { authWrapper, userPerm } from "../util/authorization";
 import Person from "../util/person.model";
+import configFile from "../config";
 
 const AddFileToPerson: AzureFunction = async function (
   context: Context,
@@ -63,7 +64,7 @@ const AddFileToPerson: AzureFunction = async function (
     }
 
     const blobName = `${id}-${data.filename}`;
-    const storageAccount = "rgnoyhafifa802e";
+    const storageAccount = configFile.storageAccount;
 
     const SASToken = generateBlobSASQueryParameters(
       {
@@ -73,10 +74,7 @@ const AddFileToPerson: AzureFunction = async function (
         expiresOn: new Date(new Date().valueOf() + 86400),
         protocol: SASProtocol.HttpsAndHttp,
       },
-      new StorageSharedKeyCredential(
-        storageAccount,
-        "hBPdC5g+vpMCWxM+fvB9NGcqZjAdZ/HKmRQhOXD5PY3IqJlk6ZGzCdorihZNFaVeY9n9c9kzrCUW+AStomyDqw=="
-      )
+      new StorageSharedKeyCredential(storageAccount, configFile.accountKey)
     ).toString();
     const SASUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${blobName}?${SASToken}`;
     await Person.findByIdAndUpdate(id, {
