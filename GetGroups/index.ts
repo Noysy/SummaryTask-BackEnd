@@ -13,15 +13,11 @@ const GetGroups: AzureFunction = async function (
   try {
     const id = user.id;
     await mongooseConnection();
-    if (user.role === "USER") {
-      context.res = {
-        body: await Group.find({ people: id }).exec(),
-      };
-    } else if (user.role === "ADMIN") {
-      context.res = {
-        body: await Group.find({}).exec(),
-      };
-    }
+    context.res = {
+      body: await Group.find(
+        user.role === "ADMIN" ? {} : { people: id }
+      ).exec(),
+    };
   } catch (err) {
     errorHandler(context, err);
   }
