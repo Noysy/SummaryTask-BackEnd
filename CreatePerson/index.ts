@@ -21,7 +21,7 @@ const CreatePerson: AzureFunction = async function (
 
     await mongooseConnection();
     if (groupId)
-      if (!(await Group.findById({ _id: groupId }).exec()))
+      if (!(await Group.findById(groupId).exec()))
         throw new notFoundError("group");
 
     const { group, ...personToCreate } = req.body.person;
