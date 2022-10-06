@@ -22,7 +22,7 @@ const GetGroupsChildren: AzureFunction = async function (
     if (!group) throw new notFoundError("group");
 
     if (!group.people.includes(user.id) && user.role === "USER")
-      throw new noPermissionError();
+      throw new noPermissionError("an admin");
 
     const getGroupsChildren = async (groupId: string) => {
       const children = await Group.find({ parentGroup: groupId }).exec();

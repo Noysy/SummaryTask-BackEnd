@@ -8,19 +8,19 @@ export const jwtDecode = (token: string) => {
     const jwtDecoded = jwt.verify(token, process.env.TOKEN_SECRET);
     return jwtDecoded;
   } catch (err) {
-    throw new noPermissionError();
+    throw new noPermissionError("a user");
   }
 };
 
 export const userPerm = (role: string) => {
   if (role !== "ADMIN" && role !== "USER") {
-    throw new noPermissionError();
+    throw new noPermissionError("a user");
   }
 };
 
 export const adminPerm = (role: string) => {
   if (role !== "ADMIN") {
-    throw new noPermissionError();
+    throw new noPermissionError("an admin");
   }
 };
 

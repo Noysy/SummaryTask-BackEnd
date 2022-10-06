@@ -19,7 +19,7 @@ const GetGroup: AzureFunction = async function (
     const group = await Group.findById(id).exec();
 
     if (!group) throw new notFoundError("group");
-    if (!group.people.includes(user.id)) throw new noPermissionError();
+    if (!group.people.includes(user.id)) throw new noPermissionError("an admin");
 
     await mongooseConnection();
     context.res = {

@@ -20,9 +20,9 @@ class validationError extends CustomError {
 }
 
 class noPermissionError extends CustomError {
-  constructor() {
+  constructor(role: string) {
     super(
-      "Uh oh.. Seems like you don't have permission to do that. Get lost loser.",
+      `Uh oh.. Seems like you need to be ${role} to do that. Get lost loser.`,
       403
     );
   }
