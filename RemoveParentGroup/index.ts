@@ -26,7 +26,7 @@ const RemoveParentGroup: AzureFunction = async function (
 
     if (!group) throw new validationError("This group does not have a parent");
 
-    await group.update({ $unset: { parentGroup: 1 } }, { new: true }).exec();
+    await group.updateOne({ $unset: { parentGroup: 1 } }, { new: true }).exec();
     await group.save();
     context.res = {
       body: group,
