@@ -5,7 +5,7 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": ["delete"],
+      "methods": ["patch"],
       "route": "group/{id}/parent"
     },
     {
