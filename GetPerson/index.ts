@@ -16,7 +16,7 @@ const GetPerson: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     validateId(id);
-    if (!(id === user.id) && user.role === Role.User)
+    if (id !== user.id && user.role === Role.User)
       throw new noPermissionError("an admin");
 
     await mongooseConnection();
