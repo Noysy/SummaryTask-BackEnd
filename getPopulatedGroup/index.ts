@@ -1,0 +1,43 @@
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+
+import Group from "../util/group.model";
+import IPerson from "../util/person.interface";
+import { authWrapper, userPerm } from "../util/authorization";
+import { noPermissionError } from "../util/custom.error";
+import errorHandler from "../util/error.handling";
+import mongooseConnection from "../util/mongoose.connection";
+import { validateId } from "../util/joi";
+import { Role } from "../util/group.interface";
+
+const GetPopulatedGroup: AzureFunction = async function (
+  context: Context,
+  _req: HttpRequest,
+  user: IPerson
+): Promise<void> {
+  try {
+    const { id } = context.bindingData;
+    validateId(id);
+
+    await mongooseConnection();
+    const group = await Group.findById(id)
+      .populate("people")
+      .populate("parentGroup")
+      .exec();
+
+    if (user.role === Role.User) {
+      const userGroups = await Group.find({ people: user.id }).exec();
+      if (
+        !userGroups.some((userGroup) => `${userGroup._id}` === `${group._id}`)
+      )
+        throw new noPermissionError("an admin");
+    }
+
+    context.res = {
+      body: group,
+    };
+  } catch (err) {
+    errorHandler(context, err);
+  }
+};
+
+export default authWrapper(GetPopulatedGroup, userPerm);

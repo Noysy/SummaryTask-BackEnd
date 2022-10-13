@@ -1,0 +1,25 @@
+{
+  "name": "summarytask-backend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/storage-blob": "^12.11.0",
+    "@azure/storage-queue": "^12.10.0",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.2",
+    "@azure/functions": "^3.0.0",
+    "parse-multipart": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^16.x",
+    "typescript": "^4.0.0"
+  }
+}
