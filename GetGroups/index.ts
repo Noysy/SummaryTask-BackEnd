@@ -4,6 +4,7 @@ import IPerson from "../util/person.interface";
 import { authWrapper, userPerm } from "../util/authorization";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
+import { Role } from "../util/group.interface";
 
 const GetGroups: AzureFunction = async function (
   context: Context,
@@ -15,7 +16,7 @@ const GetGroups: AzureFunction = async function (
     await mongooseConnection();
     context.res = {
       body: await Group.find(
-        user.role === "ADMIN" ? {} : { people: id }
+        user.role === Role.Admin ? {} : { people: id }
       ).exec(),
     };
   } catch (err) {

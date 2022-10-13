@@ -6,6 +6,7 @@ import { noPermissionError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import { validateId } from "../util/joi";
+import { Role } from "../util/group.interface";
 
 const GetPersonsGroups: AzureFunction = async function (
   context: Context,
@@ -15,7 +16,7 @@ const GetPersonsGroups: AzureFunction = async function (
   try {
     const { id } = context.bindingData;
     validateId(id);
-    if (!(id === user.id) && user.role === "USER")
+    if (!(id === user.id) && user.role === Role.User)
       throw new noPermissionError("an admin");
 
     await mongooseConnection();

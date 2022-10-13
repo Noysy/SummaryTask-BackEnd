@@ -7,6 +7,7 @@ import { noPermissionError } from "../util/custom.error";
 import errorHandler from "../util/error.handling";
 import mongooseConnection from "../util/mongoose.connection";
 import { validateId } from "../util/joi";
+import { Role } from "../util/group.interface";
 
 const GetPopulatedGroup: AzureFunction = async function (
   context: Context,
@@ -23,7 +24,7 @@ const GetPopulatedGroup: AzureFunction = async function (
       .populate("parentGroup")
       .exec();
 
-    if (user.role === "USER") {
+    if (user.role === Role.User) {
       const userGroups = await Group.find({ people: user.id }).exec();
       if (
         !userGroups.some((userGroup) => `${userGroup._id}` === `${group._id}`)

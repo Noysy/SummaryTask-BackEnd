@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import errorHandler from "./error.handling";
 import { noPermissionError } from "./custom.error";
+import { Role } from "./group.interface";
 
 export const jwtDecode = (token: string) => {
   try {
@@ -13,13 +14,13 @@ export const jwtDecode = (token: string) => {
 };
 
 export const userPerm = (role: string) => {
-  if (role !== "ADMIN" && role !== "USER") {
+  if (role !== Role.Admin && role !== Role.User) {
     throw new noPermissionError("a user");
   }
 };
 
 export const adminPerm = (role: string) => {
-  if (role !== "ADMIN") {
+  if (role !== Role.Admin) {
     throw new noPermissionError("an admin");
   }
 };

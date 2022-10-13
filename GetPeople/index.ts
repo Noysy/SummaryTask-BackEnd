@@ -5,6 +5,7 @@ import errorHandler from "../util/error.handling";
 import Group from "../util/group.model";
 import mongooseConnection from "../util/mongoose.connection";
 import Person from "../util/person.model";
+import { Role } from "../util/group.interface";
 
 const GetPeople: AzureFunction = async function (
   context: Context,
@@ -13,7 +14,7 @@ const GetPeople: AzureFunction = async function (
 ): Promise<void> {
   try {
     if (!user) return null;
-    else if (user.role === "USER") {
+    else if (user.role === Role.User) {
       await mongooseConnection();
       const { id } = user;
 
@@ -37,7 +38,7 @@ const GetPeople: AzureFunction = async function (
       context.res = {
         body: people,
       };
-    } else if (user.role === "ADMIN") {
+    } else if (user.role === Role.Admin) {
       await mongooseConnection();
       context.res = {
         body: await Person.find().exec(),

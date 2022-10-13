@@ -6,6 +6,7 @@ import errorHandler from "../util/error.handling";
 import Group from "../util/group.model";
 import mongooseConnection from "../util/mongoose.connection";
 import { validateId } from "../util/joi";
+import { Role } from "../util/group.interface";
 
 const GetGroupsChildren: AzureFunction = async function (
   context: Context,
@@ -21,7 +22,7 @@ const GetGroupsChildren: AzureFunction = async function (
 
     if (!group) throw new notFoundError("group");
 
-    if (!group.people.includes(user.id) && user.role === "USER")
+    if (!group.people.includes(user.id) && user.role === Role.User)
       throw new noPermissionError("an admin");
 
     const getGroupsChildren = async (groupId: string) => {

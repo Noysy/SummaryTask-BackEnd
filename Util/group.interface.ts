@@ -4,4 +4,9 @@ type IGroup = {
   parentGroup?: string;
 };
 
+export enum Role {
+  User= "USER",
+  Admin = "ADMIN"
+}
+
 export default IGroup;
